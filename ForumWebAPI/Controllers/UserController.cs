@@ -1,7 +1,4 @@
 using Microsoft.AspNetCore.Mvc;
-using System.ComponentModel;
-using Microsoft.EntityFrameworkCore;
-using System.Text.RegularExpressions;
 
 namespace ForumWebAPI.Controllers;
 
@@ -10,20 +7,20 @@ namespace ForumWebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DataContext dataContext;
-    private UserService ps;
+    private UserService userService;
 
     public UserController(DataContext dataContext)
     {
         this.dataContext = dataContext;
-        ps = new UserService(dataContext);
+        userService = new UserService(dataContext);
     }
 
     #region CRUD
     [HttpPost]
-    public async Task<ActionResult<List<User>>> AddUser([FromBody] User p){ 
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.User>> UserList;
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await ps.AddUser(p);
+            UserList = await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
             return BadRequest();
             //dodać logger
@@ -32,10 +29,10 @@ public class UserController : ControllerBase
     }
 
     [HttpPut]
-    public async Task<ActionResult<List<User>>> UpdateUser([FromBody] User p){
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.User>> UserList;
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] User p){
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await ps.UpdateUser(p);
+            UserList = await userService.UpdateUser(p);
         } catch(ArgumentException e){ 
             return BadRequest();
             //dodać logger
@@ -45,10 +42,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<ActionResult<User>> GetUser([FromRoute] int id){
-        Microsoft.AspNetCore.Mvc.ActionResult<ForumWebAPI.User> User;
+    public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
+        Microsoft.AspNetCore.Mvc.ActionResult<ForumWebAPI.AlreadyRegisteredUserDTO> User;
         try {
-            User = await ps.GetUser(id);
+            User = await userService.GetUser(id);
         } catch(ArgumentException e){ 
             return BadRequest();
             //dodać logger
@@ -57,10 +54,10 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<ActionResult<List<User>>> DeleteUser([FromRoute] int id){
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.User>> UserList;
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] int id){
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await ps.DeleteUser(id);
+            UserList = await userService.DeleteUser(id);
         } catch(ArgumentException e){ 
             return BadRequest();
             //dodać logger
@@ -69,10 +66,10 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("Users")]
-    public async Task<ActionResult<List<User>>> GetUsers(){
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.User>> UserList;
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetUsers(){
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await ps.GetUsers();
+            UserList = await userService.GetUsers();
         } catch(ArgumentException e){ 
             return BadRequest();
             //dodać logger

@@ -1,9 +1,5 @@
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection.Metadata;
 using System.Text.RegularExpressions;
+using System.Security.Cryptography;
 
 namespace ForumWebAPI;
 
@@ -19,14 +15,18 @@ public class UserService
     }
 
     #region CRUD
-    public async Task<List<User>> AddUser(User u){
-        if(!CheckUser(u)){
+    public async Task<List<AlreadyRegisteredUserDTO>> RegisterUser(RegisterUserDTO u){
+        User newUser = RegUsrDTO_To_User(u);
+        if(!CheckUser(newUser)){
             throw new ArgumentException();
         }
-        return await ur.AddUser(u);
+        newUser.Role = 0;
+        var Users = await ur.AddUser(newUser);
+        List<AlreadyRegisteredUserDTO> AUsersList= UserList_To_AlreadyRegisteredUserDTOList(Users);
+        return AUsersList;
     }
 
-    public async Task<List<User>> UpdateUser(User u){
+    public async Task<List<AlreadyRegisteredUserDTO>> UpdateUser(User u){
         if(!CheckUser(u)){
             throw new ArgumentException();
         }
@@ -38,33 +38,39 @@ public class UserService
         dbUser.Surname = u.Surname;
         dbUser.Country = u.Country;
         dbUser.BirthDate = u.BirthDate;
-        dbUser.email = u.email;
+        dbUser.Email = u.Email;
         //dodać jeśli nie chce updatować jednego lub wielu z pól żeby przypadkiem nulla nie przypisać
-        return await ur.UpdateUser();
+        var UserList = await ur.UpdateUser();
+        List<AlreadyRegisteredUserDTO> AUsersList = UserList_To_AlreadyRegisteredUserDTOList(UserList);
+        return AUsersList;
     }
 
-    public async Task<User> GetUser(int id){
+    public async Task<AlreadyRegisteredUserDTO> GetUser(int id){
         var User = await ur.GetUser(id);
         if(User == null){
             throw new ArgumentException();
         }
-        return User;
+        AlreadyRegisteredUserDTO AUser = User_To_AlrRegUsrDTO(User);
+        return AUser;
     }
 
-    public async Task<List<User>> DeleteUser(int id){
+    public async Task<List<AlreadyRegisteredUserDTO>> DeleteUser(int id){
         var dbUser = await ur.GetUser(id);
         if(dbUser == null){
             throw new ArgumentException();
         }
-        return await ur.DeleteUser(dbUser);
+        var UserList = await ur.DeleteUser(dbUser);
+        List<AlreadyRegisteredUserDTO> AUsersList = UserList_To_AlreadyRegisteredUserDTOList(UserList);
+        return AUsersList;
     }
 
-    public async Task<List<User>> GetUsers(){
+    public async Task<List<AlreadyRegisteredUserDTO>> GetUsers(){
         var UserList = await ur.GetUsers();
         if(UserList == null || UserList.Count <= 0){
             throw new ArgumentException();
         }
-        return UserList;
+        var AUserList = UserList_To_AlreadyRegisteredUserDTOList(UserList);
+        return AUserList;
     }
 
     #endregion
@@ -75,7 +81,7 @@ public class UserService
         if(p == null){
             IsValid = false;
             return IsValid;
-        } else if(!p.email.Contains("@") || !p.email.Contains(".")){
+        } else if(!p.Email.Contains("@") || !p.Email.Contains(".")){
             IsValid = false;
             return IsValid;
         } else if (CheckRegex(p.Name) || CheckRegex(p.Surname) || CheckRegex(p.Country)){
@@ -102,6 +108,53 @@ public class UserService
         }
         IsBadString = false;
         return IsBadString;
+    }
+    #endregion
+
+    #region swappers
+    private User RegUsrDTO_To_User(RegisterUserDTO registerUserDTO){
+        User u = new User();
+        u.Id = registerUserDTO.Id;
+        u.Name = registerUserDTO.Name;
+        u.Surname = registerUserDTO.Surname;
+        u.Country = registerUserDTO.Country;
+        u.BirthDate = registerUserDTO.BirthDate;
+        u.Email = registerUserDTO.Email;
+        u.Username = registerUserDTO.Username;
+        u.HashedPassword = EncodePassword(registerUserDTO.Password);
+        u.Role = registerUserDTO.Role;
+        return u;
+    }
+
+    private AlreadyRegisteredUserDTO User_To_AlrRegUsrDTO(User u){
+        AlreadyRegisteredUserDTO user = new AlreadyRegisteredUserDTO();
+        user.Id = u.Id;
+        user.Name = u.Name;
+        user.Surname = u.Surname;
+        user.Country = u.Country;
+        return user;
+    }
+
+    private List<AlreadyRegisteredUserDTO> UserList_To_AlreadyRegisteredUserDTOList(List<User> userList){
+        var AUserList = new List<AlreadyRegisteredUserDTO>();
+        for(int i = 0; i < userList.Count; i++){
+            AUserList[i] = User_To_AlrRegUsrDTO(userList[i]);
+        }
+        return AUserList;
+    }
+    #endregion
+
+    #region hash
+    private string EncodePassword(string password){
+        byte[] salt;
+        new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+        var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 100000);
+        byte[] hash = pbkdf2.GetBytes(20);
+        byte[] hashBytes = new byte[36];
+        Array.Copy(salt, 0, hashBytes, 0, 16);
+        Array.Copy(hash, 0, hashBytes, 16, 20);
+        string savedPasswordHash = Convert.ToBase64String(hashBytes);
+        return savedPasswordHash;
     }
     #endregion
 }
