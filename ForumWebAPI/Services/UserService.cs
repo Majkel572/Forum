@@ -20,7 +20,6 @@ public class UserService
         if(!CheckUser(newUser)){
             throw new ArgumentException();
         }
-        newUser.Role = 0;
         var Users = await ur.AddUser(newUser);
         List<AlreadyRegisteredUserDTO> AUsersList= UserList_To_AlreadyRegisteredUserDTOList(Users);
         return AUsersList;
@@ -122,7 +121,7 @@ public class UserService
         u.Email = registerUserDTO.Email;
         u.Username = registerUserDTO.Username;
         u.HashedPassword = EncodePassword(registerUserDTO.Password);
-        u.Role = registerUserDTO.Role;
+        u.Role = Roles.DEFAULT;
         return u;
     }
 
