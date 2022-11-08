@@ -7,8 +7,8 @@ namespace ForumWebAPI
         public string Country { get; set; }
         public DateTime BirthDate { get; set; }
         public string Email { get; set; }
-        public string Username { set{ Username = value; }}
-        public string HashedPassword { set{ HashedPassword = value; } }
+        public string Username { get; set; }
+        public string HashedPassword { get; set; }
         public Roles Role { get; set; }
     }
 }

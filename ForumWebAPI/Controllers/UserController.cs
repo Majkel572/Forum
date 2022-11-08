@@ -1,4 +1,6 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace ForumWebAPI.Controllers;
 
@@ -8,22 +10,25 @@ public class UserController : ControllerBase
 {
     private readonly DataContext dataContext;
     private UserService userService;
-
-    public UserController(DataContext dataContext)
+    private readonly ILogger<UserController> logger;
+    public UserController(DataContext dataContext, ILogger<UserController> logger, IConfiguration iconfig)
     {
         this.dataContext = dataContext;
-        userService = new UserService(dataContext);
+        userService = new UserService(dataContext, iconfig);
+        this.logger = logger;
     }
 
     #region CRUD
-    [HttpPost]
+    [HttpPost("RegisterUser")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
-            //dodać logger
         }
         return Ok(UserList);
     }
@@ -34,8 +39,10 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.UpdateUser(p);
         } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
-            //dodać logger
         }
         
         return Ok(UserList);
@@ -47,8 +54,10 @@ public class UserController : ControllerBase
         try {
             User = await userService.GetUser(id);
         } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
-            //dodać logger
         }
         return Ok(User);
     }
@@ -59,8 +68,10 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.DeleteUser(id);
         } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
-            //dodać logger
         }
         return Ok(UserList);
     }
@@ -71,10 +82,34 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.GetUsers();
         } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
-            //dodać logger
         }        
         return Ok(UserList);
     }
     #endregion
+
+    #region Login
+    [AllowAnonymous]
+    [HttpPost]
+    public async Task<IActionResult> LoginUser([FromBody]UserLoginDTO userLogin){
+        string loggedInToken;
+        try{
+            loggedInToken = await userService.LoginUser(userLogin);
+        } catch(ArgumentException e){
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return NotFound("User not founr");
+        }
+        return Ok(loggedInToken);
+    }
+    #endregion
+    private Logs LogCreator(string message){
+        Logs newLog = new Logs();
+        newLog.Log = message;
+        return newLog;
+    }
 }
