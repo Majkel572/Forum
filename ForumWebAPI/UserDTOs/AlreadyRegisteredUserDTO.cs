@@ -20,7 +20,20 @@ namespace ForumWebAPI
                     return "owner";
             }
             return "";
+        }
 
+        public Roles RoleWriter(string role){
+            switch (role){
+                case "default":
+                    return Roles.DEFAULT;
+                case "moderator":
+                    return Roles.MODERATOR;
+                case "administrator":
+                    return Roles.ADMINISTRATOR;
+                case "owner":
+                    return Roles.OWNER;
+            }
+            return Roles.DEFAULT;
         }
     }
 }

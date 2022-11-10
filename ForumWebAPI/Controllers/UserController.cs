@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -19,7 +20,7 @@ public class UserController : ControllerBase
     }
 
     #region CRUD
-    [HttpPost("RegisterUser")]
+    [HttpPost("RegisterUserPublic")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
@@ -30,11 +31,13 @@ public class UserController : ControllerBase
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
-        return Ok(UserList);
+        return Ok("Successfully created account.");
     }
 
-    [HttpPut]
+    [HttpPut("Defaults")]
+    [Authorize(Roles = "default, administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] User p){
+        var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.UpdateUser(p);
@@ -45,11 +48,13 @@ public class UserController : ControllerBase
             return BadRequest();
         }
         
-        return Ok(UserList);
+        return Ok("Successfully updated information.");
     }
-
-    [HttpGet("{id}")]
+    #region administrators
+    [HttpGet("AdminsGetUser")]
+    [Authorize(Roles = "administrator")]
     public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
+        var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<ForumWebAPI.AlreadyRegisteredUserDTO> User;
         try {
             User = await userService.GetUser(id);
@@ -59,11 +64,13 @@ public class UserController : ControllerBase
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
-        return Ok(User);
+        return Ok(User + $"Hi {currentUser.Name}, you are an {currentUser.Role}");
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("AdminsDeleteUser")]
+    [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] int id){
+        var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.DeleteUser(id);
@@ -76,8 +83,10 @@ public class UserController : ControllerBase
         return Ok(UserList);
     }
 
-    [HttpGet("Users")]
+    [HttpGet("AdminsGetUsers")]
+    [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetUsers(){
+        var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.GetUsers();
@@ -89,6 +98,7 @@ public class UserController : ControllerBase
         }        
         return Ok(UserList);
     }
+    #endregion
     #endregion
 
     #region Login
@@ -111,5 +121,22 @@ public class UserController : ControllerBase
         Logs newLog = new Logs();
         newLog.Log = message;
         return newLog;
+    }
+
+    private AlreadyRegisteredUserDTO GetCurrentUser(){
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+
+        if(identity != null){
+            var userClaims = identity.Claims;
+            var userHelp = new AlreadyRegisteredUserDTO();
+            return new AlreadyRegisteredUserDTO{
+                Username = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.NameIdentifier)?.Value,
+                Name = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value,
+                Surname = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
+                Role = userHelp.RoleWriter(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value),
+                Country = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Country)?.Value
+            };
+        }
+        return null;
     }
 }
