@@ -6,7 +6,7 @@ using Serilog;
 namespace ForumWebAPI.Controllers;
 
 [ApiController]
-[Route("[controller]")]
+[Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly DataContext dataContext;
@@ -20,21 +20,21 @@ public class UserController : ControllerBase
     }
 
     #region CRUD
-    [HttpPost("RegisterUserPublic")]
+    [HttpPost("register")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
         return Ok("Successfully created account.");
     }
 
-    [HttpPut("Defaults")]
+    [HttpPut("update")]
     [Authorize(Roles = "default, administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] User p){
         var currentUser = GetCurrentUser(); //autoryzacja
@@ -42,8 +42,8 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.UpdateUser(p);
         } catch(ArgumentException e){ 
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
@@ -51,7 +51,7 @@ public class UserController : ControllerBase
         return Ok("Successfully updated information.");
     }
     #region administrators
-    [HttpGet("AdminsGetUser")]
+    [HttpGet("get")]
     [Authorize(Roles = "administrator")]
     public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
         var currentUser = GetCurrentUser(); //autoryzacja
@@ -59,15 +59,15 @@ public class UserController : ControllerBase
         try {
             User = await userService.GetUser(id);
         } catch(ArgumentException e){ 
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
         return Ok(User + $"Hi {currentUser.Name}, you are an {currentUser.Role}");
     }
 
-    [HttpDelete("AdminsDeleteUser")]
+    [HttpDelete("delete")]
     [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] int id){
         var currentUser = GetCurrentUser(); //autoryzacja
@@ -75,24 +75,24 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.DeleteUser(id);
         } catch(ArgumentException e){ 
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
         return Ok(UserList);
     }
 
-    [HttpGet("AdminsGetUsers")]
-    [Authorize(Roles = "administrator")]
+    [HttpGet("getall")]
+    [Authorize(Roles = "default, administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetUsers(){
         var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.GetUsers();
         } catch(ArgumentException e){ 
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }        
@@ -103,16 +103,16 @@ public class UserController : ControllerBase
 
     #region Login
     [AllowAnonymous]
-    [HttpPost]
+    [HttpPost("login")]
     public async Task<IActionResult> LoginUser([FromBody]UserLoginDTO userLogin){
         string loggedInToken;
         try{
             loggedInToken = await userService.LoginUser(userLogin);
         } catch(ArgumentException e){
-            dataContext.Logs.Add(LogCreator(e.ToString()));
-            await dataContext.SaveChangesAsync();
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
-            return NotFound("User not founr");
+            return NotFound("User not found");
         }
         return Ok(loggedInToken);
     }
@@ -125,7 +125,6 @@ public class UserController : ControllerBase
 
     private AlreadyRegisteredUserDTO GetCurrentUser(){
         var identity = HttpContext.User.Identity as ClaimsIdentity;
-
         if(identity != null){
             var userClaims = identity.Claims;
             var userHelp = new AlreadyRegisteredUserDTO();

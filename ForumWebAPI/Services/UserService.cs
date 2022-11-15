@@ -26,6 +26,7 @@ public class UserService
         }
         var Users = await ur.AddUser(newUser);
         List<AlreadyRegisteredUserDTO> AUsersList = UserList_To_AlreadyRegisteredUserDTOList(Users);
+        EmailSender.SendEmail(u.Email);
         return AUsersList;
     }
 
@@ -91,7 +92,7 @@ public class UserService
     private string Generate(AlreadyRegisteredUserDTO user){
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
+        
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, user.Username),
             new Claim(ClaimTypes.Name, user.Name),
@@ -174,7 +175,7 @@ public class UserService
         u.Email = registerUserDTO.Email;
         u.Username = registerUserDTO.Username;
         u.HashedPassword = registerUserDTO.Password;//EncodePassword(registerUserDTO.Password);
-        u.Role = Roles.DEFAULT;
+        u.Role = registerUserDTO.Role;
         return u;
     }
 
@@ -185,6 +186,7 @@ public class UserService
         user.Surname = u.Surname;
         user.Country = u.Country;
         user.Username = u.Username;
+        user.Role = u.Role;
         return user;
     }
 
