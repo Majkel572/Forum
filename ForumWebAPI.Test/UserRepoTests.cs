@@ -1,4 +1,6 @@
 using Moq;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace ForumWebAPI.Test;
 
@@ -6,13 +8,24 @@ public class UserRepoTests{
    
     [Fact]
     public async Task AddPlayer_ShouldExecute_WhenPlayerIsValid(){
-        var dataContext = new Mock<DataContext>();
-        var userRepo = new Mock<IUserRepo>();
+        var mockContext = new Mock<DataContext>();
+        var mockSet = new Mock<DbSet<User>>();
+        
+        RegisterUserDTO user = CreateCorrectUser();
+
+        mockContext.Setup(m => m.Users).Returns(mockSet.Object);
+
+        var userService = new UserService(mockContext.Object);
+
+        await userService.RegisterUser(user);
+        AlreadyRegisteredUserDTO dbUser = await userService.GetUser(user.Id);
+
+        Assert.Equal(dbUser.Name, user.Name);
     }
 
     #region helpers
-    private User CreateCorrectUser(){
-        User u = new User();
+    private RegisterUserDTO CreateCorrectUser(){
+        RegisterUserDTO u = new RegisterUserDTO();
         u.Id = 0;
         u.Name = "Mikolaj";
         u.Surname = "Guryn";
@@ -20,9 +33,8 @@ public class UserRepoTests{
         u.BirthDate = new DateTime(2001, 03, 25);
         u.Email = "mikulio@gmail.com";
         u.Username = "Miki";
-        u.HashedPassword = "Miki01";
+        u.Password = "Miki01";
         u.Role = Roles.ADMINISTRATOR;
-        u.Posts = new List<Post>();
         return u;
     }
     #endregion

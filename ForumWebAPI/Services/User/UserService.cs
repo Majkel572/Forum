@@ -21,6 +21,13 @@ public class UserService
         passwordHasher = new PasswordHasher<User>();
     }
 
+    public UserService(DataContext dataContext)
+    {
+        this.dataContext = dataContext;
+        ur = new UserRepo(dataContext);
+        passwordHasher = new PasswordHasher<User>();
+    }
+
     #region CRUD
     public async Task<List<AlreadyRegisteredUserDTO>> RegisterUser(RegisterUserDTO u){
         User newUser = RegUsrDTO_To_User(u);
