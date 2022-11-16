@@ -52,9 +52,9 @@ public class UserController : ControllerBase
     }
     #region administrators
     [HttpGet("get")]
-    [Authorize(Roles = "administrator")]
+    //[Authorize(Roles = "administrator")]
     public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
-        var currentUser = GetCurrentUser(); //autoryzacja
+        //var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<ForumWebAPI.AlreadyRegisteredUserDTO> User;
         try {
             User = await userService.GetUser(id);
@@ -64,7 +64,7 @@ public class UserController : ControllerBase
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
-        return Ok(User + $"Hi {currentUser.Name}, you are an {currentUser.Role}");
+        return Ok(User);
     }
 
     [HttpDelete("delete")]
@@ -84,7 +84,7 @@ public class UserController : ControllerBase
     }
 
     [HttpGet("getall")]
-    [Authorize(Roles = "default, administrator")]
+    [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetUsers(){
         var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;

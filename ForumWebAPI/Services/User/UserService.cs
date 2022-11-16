@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using Microsoft.AspNetCore.Identity;
 
 namespace ForumWebAPI;
 
@@ -11,11 +12,13 @@ public class UserService
     private readonly DataContext dataContext;
     private UserRepo ur;
     private IConfiguration config;
+    private readonly IPasswordHasher<User> passwordHasher;
     public UserService(DataContext dataContext, IConfiguration _config)
     {
         this.dataContext = dataContext;
         ur = new UserRepo(dataContext);
         this.config = _config;
+        passwordHasher = new PasswordHasher<User>();
     }
 
     #region CRUD
@@ -112,7 +115,7 @@ public class UserService
 
     private AlreadyRegisteredUserDTO Authenticate(UserLoginDTO userLogin, List<User> userList){
         var currentUser = userList.FirstOrDefault(o => o.Username.ToLower() ==
-            userLogin.Username.ToLower() && o.HashedPassword == userLogin.HashedPassword);
+            userLogin.Username.ToLower() && passwordHasher.VerifyHashedPassword(o, o.HashedPassword, userLogin.Password) != PasswordVerificationResult.Failed);
         if(currentUser != null){
             var currentUserARUDTO = User_To_AlrRegUsrDTO(currentUser);
             return currentUserARUDTO;
@@ -128,7 +131,7 @@ public class UserService
     }
     #endregion
 
-    #region Checkers
+    #region checkers
     private bool CheckUser(User p){
         bool IsValid = true;
         if(p == null){
@@ -174,7 +177,7 @@ public class UserService
         u.BirthDate = registerUserDTO.BirthDate;
         u.Email = registerUserDTO.Email;
         u.Username = registerUserDTO.Username;
-        u.HashedPassword = registerUserDTO.Password;//EncodePassword(registerUserDTO.Password);
+        u.HashedPassword = passwordHasher.HashPassword(u, registerUserDTO.Password);//EncodePassword(registerUserDTO.Password);
         u.Role = registerUserDTO.Role;
         return u;
     }

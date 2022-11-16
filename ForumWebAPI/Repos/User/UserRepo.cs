@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace ForumWebAPI;
 
-public class UserRepo
+public class UserRepo : IUserRepo
 {   
     private readonly DataContext dataContext;
 

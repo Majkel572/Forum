@@ -3,6 +3,7 @@ using System;
 using ForumWebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForumWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221115144102_Added Posts table - yes")]
+    partial class AddedPoststableyes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -96,17 +98,12 @@ namespace ForumWebAPI.Migrations
             modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
                     b.HasOne("ForumWebAPI.User", "PostOwner")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("PostOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PostOwner");
-                });
-
-            modelBuilder.Entity("ForumWebAPI.User", b =>
-                {
-                    b.Navigation("Posts");
                 });
 #pragma warning restore 612, 618
         }

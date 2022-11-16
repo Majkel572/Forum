@@ -3,6 +3,7 @@ using System;
 using ForumWebAPI;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForumWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20221115143940_Added Posts table - post list changed from user to post")]
+    partial class AddedPoststablepostlistchangedfromusertopost
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
@@ -38,6 +40,9 @@ namespace ForumWebAPI.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int?>("PostId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("PostOwnerId")
                         .HasColumnType("INTEGER");
 
@@ -46,6 +51,8 @@ namespace ForumWebAPI.Migrations
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PostId");
 
                     b.HasIndex("PostOwnerId");
 
@@ -95,8 +102,12 @@ namespace ForumWebAPI.Migrations
 
             modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
+                    b.HasOne("ForumWebAPI.Post", null)
+                        .WithMany("PostList")
+                        .HasForeignKey("PostId");
+
                     b.HasOne("ForumWebAPI.User", "PostOwner")
-                        .WithMany("Posts")
+                        .WithMany()
                         .HasForeignKey("PostOwnerId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -104,9 +115,9 @@ namespace ForumWebAPI.Migrations
                     b.Navigation("PostOwner");
                 });
 
-            modelBuilder.Entity("ForumWebAPI.User", b =>
+            modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("PostList");
                 });
 #pragma warning restore 612, 618
         }

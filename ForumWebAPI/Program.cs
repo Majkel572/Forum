@@ -23,7 +23,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 builder.Services.AddMvc();
 builder.Services.AddRazorPages();
-
+builder.Services.AddControllers(
+    options => options.SuppressImplicitRequiredAttributeForNonNullableReferenceTypes = true);
+    
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
