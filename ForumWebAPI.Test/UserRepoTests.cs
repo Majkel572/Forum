@@ -1,6 +1,7 @@
 using Moq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Identity;
 
 namespace ForumWebAPI.Test;
 
@@ -8,34 +9,35 @@ public class UserRepoTests{
    
     [Fact]
     public async Task AddPlayer_ShouldExecute_WhenPlayerIsValid(){
+        var mockRepo = new Mock<IUserRepo>();
         var mockContext = new Mock<DataContext>();
-        var mockSet = new Mock<DbSet<User>>();
+        // var mockSet = new Mock<DbSet<User>>();
         
-        RegisterUserDTO user = CreateCorrectUser();
-
-        mockContext.Setup(m => m.Users).Returns(mockSet.Object);
-
+        List<AlreadyRegisteredUserDTO> user = CreateCorrectUsers();
+        
+        mockRepo.Setup(m => m.GetUsers()).ReturnsAsync(CreateCorrectUsers());
+        mockContext.Setup(m => m.)
         var userService = new UserService(mockContext.Object);
 
-        await userService.RegisterUser(user);
-        AlreadyRegisteredUserDTO dbUser = await userService.GetUser(user.Id);
+        var adminList = await userService.ListAdministrators();
+        
+        int adminListExpected = 1;
+        int adminListOutcome = adminList.Count;
+        string adminNameExpected = "Mikolaj";
+        string adminNameOutcome = adminList[0].Name;
 
-        Assert.Equal(dbUser.Name, user.Name);
+        Assert.Equal(adminListExpected, adminListOutcome);
+        Assert.Equal(adminNameExpected, adminNameOutcome);
     }
 
     #region helpers
-    private RegisterUserDTO CreateCorrectUser(){
-        RegisterUserDTO u = new RegisterUserDTO();
-        u.Id = 0;
-        u.Name = "Mikolaj";
-        u.Surname = "Guryn";
-        u.Country = "Poland";
-        u.BirthDate = new DateTime(2001, 03, 25);
-        u.Email = "mikulio@gmail.com";
-        u.Username = "Miki";
-        u.Password = "Miki01";
-        u.Role = Roles.ADMINISTRATOR;
-        return u;
+    private List<AlreadyRegisteredUserDTO> CreateCorrectUsers(){
+        var userList = new List<AlreadyRegisteredUserDTO>();
+        userList.Add(new AlreadyRegisteredUserDTO(0, "Mikolaj", "Guryn", "Poland",
+                                                "Miki", new DateTime(2001,03,25), Roles.ADMINISTRATOR));
+        userList.Add(new AlreadyRegisteredUserDTO(0, "Michal", "Tamburyn", "Romania",
+                                                "Michi", new DateTime(2006,04,30), Roles.DEFAULT));
+        return userList;
     }
     #endregion
 }

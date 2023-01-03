@@ -2,6 +2,9 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using ForumWebAPI.Services;
+using ForumWebAPI.RegexCheckers;
+using ForumWebAPI.UserDTOs;
 
 namespace ForumWebAPI.Controllers;
 
@@ -10,21 +13,29 @@ namespace ForumWebAPI.Controllers;
 public class UserController : ControllerBase
 {
     private readonly DataContext dataContext;
+    private AuthAuthService authAuthService;
+    private AuthAuthController aac;
     private UserService userService;
     private readonly ILogger<UserController> logger;
+    private RegexChecker regexChecker;
     public UserController(DataContext dataContext, ILogger<UserController> logger, IConfiguration iconfig)
     {
         this.dataContext = dataContext;
-        userService = new UserService(dataContext, iconfig);
+        this.authAuthService = new AuthAuthService(dataContext, iconfig);
+        this.userService = new UserService(dataContext, iconfig);
         this.logger = logger;
+        this.regexChecker = new RegexChecker(await(userService.GetUsers()));
     }
 
     #region CRUD
     [HttpPost("register")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
+        if(!regexChecker.CheckUser(user)){
+            throw new ArgumentException();
+        }
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await userService.RegisterUser(user);
+            await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
             //dataContext.Logs.Add(LogCreator(e.ToString()));
             //await dataContext.SaveChangesAsync();
@@ -36,11 +47,13 @@ public class UserController : ControllerBase
 
     [HttpPut("update")]
     [Authorize(Roles = "default, administrator")]
-    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] User p){
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] RegisterUserDTO user){
         var currentUser = GetCurrentUser(); //autoryzacja
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
+        if(!regexChecker.CheckUser(user)){
+            throw new ArgumentException();
+        }
         try {
-            UserList = await userService.UpdateUser(p);
+            await userService.UpdateUser(user);
         } catch(ArgumentException e){ 
             //dataContext.Logs.Add(LogCreator(e.ToString()));
             //await dataContext.SaveChangesAsync();
@@ -52,10 +65,10 @@ public class UserController : ControllerBase
     }
     #region administrators
     [HttpGet("get")]
-    //[Authorize(Roles = "administrator")]
+    [Authorize(Roles = "administrator")]
     public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
-        //var currentUser = GetCurrentUser(); //autoryzacja
-        Microsoft.AspNetCore.Mvc.ActionResult<ForumWebAPI.AlreadyRegisteredUserDTO> User;
+        var currentUser = GetCurrentUser(); //autoryzacja
+        Microsoft.AspNetCore.Mvc.ActionResult<AlreadyRegisteredUserDTO> User;
         try {
             User = await userService.GetUser(id);
         } catch(ArgumentException e){ 
@@ -71,7 +84,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] int id){
         var currentUser = GetCurrentUser(); //autoryzacja
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.DeleteUser(id);
         } catch(ArgumentException e){ 
@@ -87,7 +100,7 @@ public class UserController : ControllerBase
     [Authorize(Roles = "administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetUsers(){
         var currentUser = GetCurrentUser(); //autoryzacja
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<ForumWebAPI.AlreadyRegisteredUserDTO>> UserList;
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
             UserList = await userService.GetUsers();
         } catch(ArgumentException e){ 
@@ -98,30 +111,40 @@ public class UserController : ControllerBase
         }        
         return Ok(UserList);
     }
-    #endregion
-    #endregion
 
-    #region Login
-    [AllowAnonymous]
-    [HttpPost("login")]
-    public async Task<IActionResult> LoginUser([FromBody]UserLoginDTO userLogin){
-        string loggedInToken;
-        try{
-            loggedInToken = await userService.LoginUser(userLogin);
-        } catch(ArgumentException e){
+    [HttpGet("pageusers")]
+    [Authorize(Roles = "administrator")]
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> PageUsers([FromBody]int[] itemsToShowAndPages){
+        var currentUser = GetCurrentUser(); //autoryzacja
+        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
+        try {
+            UserList = await userService.PageUsers(itemsToShowAndPages[0], itemsToShowAndPages[1]);
+        } catch(ArgumentException e){ 
             //dataContext.Logs.Add(LogCreator(e.ToString()));
             //await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
-            return NotFound("User not found");
-        }
-        return Ok(loggedInToken);
+            return BadRequest();
+        }        
+        return Ok(UserList);
+    }
+
+    [HttpGet("getadminlist")]
+    [Authorize(Roles = "administrator")]
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> GetAdminList(){
+        var currentUser = GetCurrentUser(); //autoryzacja
+        List<AlreadyRegisteredUserDTO> adminList;
+        try {
+            adminList = await userService.ListAdministrators();
+        } catch(ArgumentException e){ 
+            //dataContext.Logs.Add(LogCreator(e.ToString()));
+            //await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return BadRequest();
+        }        
+        return Ok(adminList);
     }
     #endregion
-    private Logs LogCreator(string message){
-        Logs newLog = new Logs();
-        newLog.Log = message;
-        return newLog;
-    }
+    #endregion
 
     private AlreadyRegisteredUserDTO GetCurrentUser(){
         var identity = HttpContext.User.Identity as ClaimsIdentity;
@@ -137,5 +160,11 @@ public class UserController : ControllerBase
             };
         }
         return null;
+    }
+
+    private Logs LogCreator(string message){
+        Logs newLog = new Logs();
+        newLog.Log = message;
+        return newLog;
     }
 }

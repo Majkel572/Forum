@@ -1,4 +1,4 @@
-namespace ForumWebAPI;
+namespace ForumWebAPI.UserDTOs;
 
 public class UserLoginDTO{
     public string Username { get; set; }

@@ -3,6 +3,7 @@ using System.Security.Cryptography;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
+using ForumWebAPI.Repos;
 
 namespace ForumWebAPI;
 
