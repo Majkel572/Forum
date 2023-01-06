@@ -6,6 +6,7 @@ using System.ComponentModel;
 using ForumWebAPI.Externals;
 using ForumWebAPI.UserRepos;
 using ForumWebAPI.UserDTOs;
+using ForumWebAPI.RegexCheckers;
 
 namespace ForumWebAPI.Services;
 
@@ -15,12 +16,14 @@ public class UserService
     private UserRepo ur;
     private IConfiguration config;
     private readonly IPasswordHasher<User> passwordHasher;
-    public UserService(DataContext dataContext, IConfiguration _config)
+    private RegexChecker regexChecker;
+
+    public UserService(DataContext dataContext, IConfiguration iconfig)
     {
         this.dataContext = dataContext;
-        ur = new UserRepo(dataContext);
-        this.config = _config;
-        passwordHasher = new PasswordHasher<User>();
+        this.ur = new UserRepo(dataContext);
+        this.config = iconfig;
+        this.passwordHasher = new PasswordHasher<User>();
     }
 
     public UserService(DataContext dataContext)
@@ -31,15 +34,28 @@ public class UserService
     }
     
     #region CRUD
-    public async Task<bool> RegisterUser(RegisterUserDTO u){
-        await ur.AddUser(u);
+    public async Task<bool> RegisterUser(RegisterUserDTO user){
+        regexChecker = new RegexChecker(await ur.GetRawUsers());
+        if(regexChecker is null){
+            regexChecker = new RegexChecker(new List<User>(0));
+        }
+        if(!regexChecker.CheckUser(user)){
+            throw new ArgumentException();
+        }
+        if(!regexChecker.PreventDoppelganger(user)){
+            throw new ArgumentException("User already exists.");
+        }
+        await ur.AddUser(user);
         bool userSuccessfullyAdded = true;
-        EmailSender.SendEmail(u.Email);
+        EmailSender.SendEmail(user.Email);
         return userSuccessfullyAdded;
     }
 
-    public async Task<bool> UpdateUser(RegisterUserDTO u){
-        var dbUser = await ur.UpdateUser(u);
+    public async Task<bool> UpdateUser(RegisterUserDTO user){
+        if(!regexChecker.CheckUser(user)){
+            throw new ArgumentException();
+        }
+        var dbUser = await ur.UpdateUser(user);
         //dodać jeśli nie chce updatować jednego lub wielu z pól żeby przypadkiem nulla nie przypisać
         bool userSuccessfullyUpdated = true;
         return userSuccessfullyUpdated;

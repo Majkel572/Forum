@@ -16,7 +16,7 @@ public class UserRepoTests{
         List<AlreadyRegisteredUserDTO> user = CreateCorrectUsers();
         
         mockRepo.Setup(m => m.GetUsers()).ReturnsAsync(CreateCorrectUsers());
-        mockContext.Setup(m => m.)
+        // mockContext.Setup(m => m.)
         var userService = new UserService(mockContext.Object);
 
         var adminList = await userService.ListAdministrators();

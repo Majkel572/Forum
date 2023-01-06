@@ -14,33 +14,27 @@ public class UserController : ControllerBase
 {
     private readonly DataContext dataContext;
     private AuthAuthService authAuthService;
-    private AuthAuthController aac;
     private UserService userService;
     private readonly ILogger<UserController> logger;
-    private RegexChecker regexChecker;
     public UserController(DataContext dataContext, ILogger<UserController> logger, IConfiguration iconfig)
     {
         this.dataContext = dataContext;
         this.authAuthService = new AuthAuthService(dataContext, iconfig);
         this.userService = new UserService(dataContext, iconfig);
         this.logger = logger;
-        this.regexChecker = new RegexChecker(await(userService.GetUsers()));
     }
 
     #region CRUD
     [HttpPost("register")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
-        if(!regexChecker.CheckUser(user)){
-            throw new ArgumentException();
-        }
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
             await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
-            return BadRequest();
+            return BadRequest("User exists or there was a problem creating one.");
         }
         return Ok("Successfully created account.");
     }
@@ -49,14 +43,11 @@ public class UserController : ControllerBase
     [Authorize(Roles = "default, administrator")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> UpdateUser([FromBody] RegisterUserDTO user){
         var currentUser = GetCurrentUser(); //autoryzacja
-        if(!regexChecker.CheckUser(user)){
-            throw new ArgumentException();
-        }
         try {
             await userService.UpdateUser(user);
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
@@ -72,8 +63,8 @@ public class UserController : ControllerBase
         try {
             User = await userService.GetUser(id);
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
@@ -88,8 +79,8 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.DeleteUser(id);
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
@@ -104,8 +95,8 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.GetUsers();
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }        
@@ -120,8 +111,8 @@ public class UserController : ControllerBase
         try {
             UserList = await userService.PageUsers(itemsToShowAndPages[0], itemsToShowAndPages[1]);
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }        
@@ -136,8 +127,8 @@ public class UserController : ControllerBase
         try {
             adminList = await userService.ListAdministrators();
         } catch(ArgumentException e){ 
-            //dataContext.Logs.Add(LogCreator(e.ToString()));
-            //await dataContext.SaveChangesAsync();
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }        

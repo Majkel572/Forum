@@ -5,8 +5,8 @@ using ForumWebAPI.UserDTOs;
 namespace ForumWebAPI.RegexCheckers;
 
 public class RegexChecker{
-    List<AlreadyRegisteredUserDTO> userList;
-    public RegexChecker(List<AlreadyRegisteredUserDTO> userList){
+    private List<User> userList;
+    public RegexChecker(List<User> userList){
         this.userList = userList;
     }
     public bool CheckUser(RegisterUserDTO user){
@@ -14,14 +14,25 @@ public class RegexChecker{
         if(user == null){
             IsValid = false;
             return IsValid;
-        } else if(!user.Email.Contains("@") || !user.Email.Contains(".")){
+        } else if(!user.Email.Contains("@") || !user.Email.Contains(".") || PreventAttack(user.Email)){
             IsValid = false;
             return IsValid;
         } else if (CheckRegex(user.Name) || CheckRegex(user.Surname) || CheckRegex(user.Country)){
             IsValid = false;
             return IsValid;
+        } else if (PreventAttack(user.Name) || PreventAttack(user.Surname) || PreventAttack(user.Country) || PreventAttack(user.Username) || PreventAttack(user.Password)){
+            IsValid = false;
+            return IsValid;
         }
-        foreach(AlreadyRegisteredUserDTO u in userList){
+        return IsValid;
+    }
+    
+    public bool PreventDoppelganger(RegisterUserDTO user){
+        bool IsValid = true;
+        if(userList.Count == 0){
+            return true;
+        }
+        foreach(User u in userList){
             if(u.Username.Equals(user.Username)){
                 IsValid = false;
                 return IsValid;
@@ -48,6 +59,17 @@ public class RegexChecker{
                 }
                 return IsBadString;
             }
+        }
+        IsBadString = false;
+        return IsBadString;
+    }
+
+    private bool PreventAttack(string s){
+        bool IsBadString = true;
+        if(string.IsNullOrEmpty(s)){
+            return IsBadString;
+        } else if (s.Contains("'") || s.Contains(">") || s.Contains("<") || s.Contains("/") || s.Contains("\\")){
+            return IsBadString;
         }
         IsBadString = false;
         return IsBadString;

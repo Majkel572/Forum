@@ -1,0 +1,121 @@
+a {
+    text-decoration: none;
+}
+
+:root {
+    --bodyBg: #ccc;
+    --gmail: rgb(219, 68, 55);
+    --customGray: #e6d6f6;
+    --facebook: rgba(59, 89, 152);
+    --twitter: rgba(29, 161, 242);
+    --gmail: rgba(219, 68, 55);
+}
+
+body {
+    background-color: var(--bodyBg);
+}
+
+main {
+    position: relative;
+    width: 1000px;
+    height: 750px;
+    top: 10vh;
+}
+
+form {
+    width: 330px;
+    margin: auto !important;
+}
+
+img {
+    height: 750px;
+    width: 100%;
+}
+
+.fa-xmark {
+    position: absolute;
+    top: 25px;
+    left: 25px;
+}
+
+.fa-xmark:hover {
+    cursor: pointer;
+    color: var(--gmail);
+}
+
+.fa-circle-user,
+.fa-key,
+.fa-user,
+.fa-envelope,
+.fa-cake-candles,
+.fa-flag,
+.fa-code {
+    border: 1px solid var(--customGray);
+    padding: 0.5rem;
+}
+
+label[for="rememberMe"]:hover {
+    text-decoration: underline;
+    cursor: pointer;
+    color: var(--twitter);
+}
+
+.alt-logIn {
+    padding: 0.6rem;
+    color: #fff;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.fa-facebook-square {
+    background-color: rgb(39, 58, 100);
+}
+
+.btn-facebook {
+    background-color: var(--facebook);
+    color: #fff;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.fa-twitter-square {
+    background-color: rgb(24, 127, 192);
+}
+
+.btn-twitter {
+    background-color: var(--twitter);
+    color: #fff;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+.fa-google {
+    background-color: rgb(153, 48, 39);
+}
+
+.btn-gmail {
+    background-color: var(--gmail);
+    color: #fff;
+    border-top-left-radius: 0px;
+    border-bottom-left-radius: 0px;
+}
+
+footer {
+    position: relative;
+    margin-top: 100px;
+}
+
+footer:hover {
+    cursor: pointer;
+    color: var(--twitter);
+}
+
+@media (max-width: 1000px) {
+    main {
+        max-width: 400px;
+    }
+
+    main div:nth-child(3) {
+        display: none;
+    }
+}

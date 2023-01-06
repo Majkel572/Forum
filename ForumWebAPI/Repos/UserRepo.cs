@@ -87,7 +87,7 @@ public class UserRepo : IUserRepo
         u.Email = registerUserDTO.Email;
         u.Username = registerUserDTO.Username;
         u.HashedPassword = passwordHasher.HashPassword(u, registerUserDTO.Password);//EncodePassword(registerUserDTO.Password);
-        u.Role = registerUserDTO.Role;
+        u.Role = Roles.DEFAULT;
         return u;
     }
 
