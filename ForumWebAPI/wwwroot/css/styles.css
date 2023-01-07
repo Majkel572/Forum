@@ -67,7 +67,7 @@ label[for="rememberMe"]:hover {
     border-bottom-left-radius: 5px;
 }
 
-.fa-facebook-square {
+/* .fa-facebook-square {
     background-color: rgb(39, 58, 100);
 }
 
@@ -98,9 +98,9 @@ label[for="rememberMe"]:hover {
     color: #fff;
     border-top-left-radius: 0px;
     border-bottom-left-radius: 0px;
-}
+} */
 
-footer {
+/* footer {
     position: relative;
     margin-top: 100px;
 }
@@ -108,7 +108,7 @@ footer {
 footer:hover {
     cursor: pointer;
     color: var(--twitter);
-}
+} */
 
 @media (max-width: 1000px) {
     main {

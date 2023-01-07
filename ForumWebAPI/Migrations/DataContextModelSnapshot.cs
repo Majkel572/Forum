@@ -34,38 +34,36 @@ namespace ForumWebAPI.Migrations
 
             modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("PostId")
+                        .HasColumnType("TEXT");
 
-                    b.Property<int>("PostOwnerId")
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("content")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<string>("postOwnerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
-                    b.HasIndex("PostOwnerId");
+                    b.HasKey("PostId");
+
+                    b.HasIndex("UserEmail");
 
                     b.ToTable("Posts");
                 });
 
             modelBuilder.Entity("ForumWebAPI.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -88,25 +86,27 @@ namespace ForumWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<bool>("isValidated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("validationCode")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Email");
 
                     b.ToTable("Users");
                 });
 
             modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
-                    b.HasOne("ForumWebAPI.User", "PostOwner")
-                        .WithMany("Posts")
-                        .HasForeignKey("PostOwnerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PostOwner");
+                    b.HasOne("ForumWebAPI.User", null)
+                        .WithMany("UserPosts")
+                        .HasForeignKey("UserEmail");
                 });
 
             modelBuilder.Entity("ForumWebAPI.User", b =>
                 {
-                    b.Navigation("Posts");
+                    b.Navigation("UserPosts");
                 });
 #pragma warning restore 612, 618
         }

@@ -27,7 +27,6 @@ public class UserController : ControllerBase
     #region CRUD
     [HttpPost("register")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
-        Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
             await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
@@ -36,7 +35,20 @@ public class UserController : ControllerBase
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest("User exists or there was a problem creating one.");
         }
-        return Ok("Successfully created account.");
+        return Ok("Account successfuly created, waiting for validation.");
+    }
+
+    [HttpPost("validate")]
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> ValidateUser(int validationCode, string email){ 
+        try {
+            await userService.ValidateUser(validationCode, email);
+        } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return BadRequest("Bad code");
+        }
+        return Ok("Successfully validated account.");
     }
 
     [HttpPut("update")]
@@ -57,11 +69,11 @@ public class UserController : ControllerBase
     #region administrators
     [HttpGet("get")]
     [Authorize(Roles = "administrator")]
-    public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] int id){
+    public async Task<ActionResult<AlreadyRegisteredUserDTO>> GetUser([FromRoute] string email){
         var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<AlreadyRegisteredUserDTO> User;
         try {
-            User = await userService.GetUser(id);
+            User = await userService.GetUser(email);
         } catch(ArgumentException e){ 
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
@@ -73,11 +85,11 @@ public class UserController : ControllerBase
 
     [HttpDelete("delete")]
     [Authorize(Roles = "administrator")]
-    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] int id){
+    public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> DeleteUser([FromRoute] string email){
         var currentUser = GetCurrentUser(); //autoryzacja
         Microsoft.AspNetCore.Mvc.ActionResult<System.Collections.Generic.List<AlreadyRegisteredUserDTO>> UserList;
         try {
-            UserList = await userService.DeleteUser(id);
+            UserList = await userService.DeleteUser(email);
         } catch(ArgumentException e){ 
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();

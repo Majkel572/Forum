@@ -38,8 +38,6 @@ const registerForm = document.forms['register'];
 registerForm.addEventListener('submit', function(e){
   e.preventDefault();
   
-  const value = registerForm.querySelector('input[type="text"]').value;
-
   var name = document.getElementById('name').children['name'].value;
   var surname = document.getElementById('surname').children['surname'].value;
   var country = document.getElementById('country').children['country'].value;
@@ -48,4 +46,23 @@ registerForm.addEventListener('submit', function(e){
   var username = document.getElementById('username').children['username'].value;
   var password = document.getElementById('password').children['password'].value;
   console.log(name + " " + surname + " " + country + " " + birthdate + " " + email + " " + username + " " + password);
+
+  if(registerForm.checkValidity()){
+    fetch('https://localhost:7025/api/User/register', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      name: name,
+      surname: surname,
+      country: country,
+      birthDate: birthdate,
+      email: email,
+      username: username,
+      password: password
+    })
+    })
+    window.location.replace("https://localhost:7025/pages/confirmRegister.html");
+  }
 });

@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ForumWebAPI.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20221115123519_Role changed to string")]
-    partial class Rolechangedtostring
+    [Migration("20230107184754_user valcode int")]
+    partial class uservalcodeint
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -34,20 +34,38 @@ namespace ForumWebAPI.Migrations
                     b.ToTable("Logs");
                 });
 
+            modelBuilder.Entity("ForumWebAPI.Post", b =>
+                {
+                    b.Property<string>("PostId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserEmail")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("postOwnerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("PostId");
+
+                    b.HasIndex("UserEmail");
+
+                    b.ToTable("Posts");
+                });
+
             modelBuilder.Entity("ForumWebAPI.User", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
+                    b.Property<string>("Email")
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("BirthDate")
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Country")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
                         .IsRequired()
                         .HasColumnType("TEXT");
 
@@ -70,9 +88,27 @@ namespace ForumWebAPI.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
+                    b.Property<bool>("isValidated")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("validationCode")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Email");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("ForumWebAPI.Post", b =>
+                {
+                    b.HasOne("ForumWebAPI.User", null)
+                        .WithMany("UserPosts")
+                        .HasForeignKey("UserEmail");
+                });
+
+            modelBuilder.Entity("ForumWebAPI.User", b =>
+                {
+                    b.Navigation("UserPosts");
                 });
 #pragma warning restore 612, 618
         }

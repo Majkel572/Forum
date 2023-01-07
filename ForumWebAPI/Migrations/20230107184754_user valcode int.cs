@@ -4,7 +4,7 @@
 
 namespace ForumWebAPI.Migrations
 {
-    public partial class Rolechangedtostring : Migration
+    public partial class uservalcodeint : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {

@@ -38,8 +38,8 @@ public class UserRepo : IUserRepo
         return updated;
     }
 
-    public async Task<AlreadyRegisteredUserDTO> GetUser(int id){
-        var user = await dataContext.Users.FindAsync(id);
+    public async Task<AlreadyRegisteredUserDTO> GetUser(string email){
+        var user = await dataContext.Users.FindAsync(email);
         if(user == null){
             throw new ArgumentException();
         }
@@ -47,8 +47,8 @@ public class UserRepo : IUserRepo
         return userDTO;
     }
 
-    public async Task<List<AlreadyRegisteredUserDTO>> DeleteUser(int id){
-        var dbUser = await dataContext.Users.FindAsync(id);
+    public async Task<List<AlreadyRegisteredUserDTO>> DeleteUser(string email){
+        var dbUser = await dataContext.Users.FindAsync(email);
         if(dbUser == null){
             throw new ArgumentException();
         }
@@ -79,7 +79,7 @@ public class UserRepo : IUserRepo
     #region swappers
     private User RegUsrDTO_To_User(RegisterUserDTO registerUserDTO){
         User u = new User();
-        u.Id = registerUserDTO.Id;
+        // u.Id = registerUserDTO.Id;
         u.Name = registerUserDTO.Name;
         u.Surname = registerUserDTO.Surname;
         u.Country = registerUserDTO.Country;
@@ -88,18 +88,22 @@ public class UserRepo : IUserRepo
         u.Username = registerUserDTO.Username;
         u.HashedPassword = passwordHasher.HashPassword(u, registerUserDTO.Password);//EncodePassword(registerUserDTO.Password);
         u.Role = Roles.DEFAULT;
+        u.isValidated = false;
+        var rnd = new Random();
+        u.validationCode = rnd.Next(0, 100000);
         return u;
     }
 
     public AlreadyRegisteredUserDTO User_To_AlrRegUsrDTO(User u){
         AlreadyRegisteredUserDTO user = new AlreadyRegisteredUserDTO();
-        user.Id = u.Id;
+        // user.Id = u.Id;
         user.Name = u.Name;
         user.Surname = u.Surname;
         user.Country = u.Country;
         user.Username = u.Username;
         user.Role = u.Role;
         user.BirthDate = u.BirthDate;
+        user.validationCode = u.validationCode;
         return user;
     }
 

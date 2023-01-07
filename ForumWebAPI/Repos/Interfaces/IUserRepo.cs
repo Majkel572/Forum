@@ -7,9 +7,9 @@ public interface IUserRepo{
 
     public Task<bool> UpdateUser(RegisterUserDTO u);
 
-    public Task<AlreadyRegisteredUserDTO> GetUser(int id);
+    public Task<AlreadyRegisteredUserDTO> GetUser(string email);
 
-    public Task<List<AlreadyRegisteredUserDTO>> DeleteUser(int id);
+    public Task<List<AlreadyRegisteredUserDTO>> DeleteUser(string email);
 
     public Task<List<AlreadyRegisteredUserDTO>> GetUsers(); // dodac pobranie listy administratorow do serwisu
     // dodac test na pelnoletnich

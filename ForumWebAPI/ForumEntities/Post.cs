@@ -1,7 +1,8 @@
 namespace ForumWebAPI;
 
-public class Post{
-    public int Id { get; set; }
+public class Post
+{
+    public string PostId { get; set; }
     public string content { get; set; }
-    public User PostOwner { get; set; } 
+    public string postOwnerEmail { get; set; }
 }

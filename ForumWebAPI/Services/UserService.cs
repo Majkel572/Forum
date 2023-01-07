@@ -51,6 +51,14 @@ public class UserService
         return userSuccessfullyAdded;
     }
 
+    public async Task<bool> ValidateUser(int validationCode, string email){
+        AlreadyRegisteredUserDTO user = await ur.GetUser(email);
+        if(user.validationCode == validationCode){
+            return true;
+        }
+        return false;
+    }
+
     public async Task<bool> UpdateUser(RegisterUserDTO user){
         if(!regexChecker.CheckUser(user)){
             throw new ArgumentException();
@@ -61,16 +69,16 @@ public class UserService
         return userSuccessfullyUpdated;
     }
 
-    public async Task<AlreadyRegisteredUserDTO> GetUser(int id){
-        AlreadyRegisteredUserDTO user = await ur.GetUser(id);
+    public async Task<AlreadyRegisteredUserDTO> GetUser(string email){
+        AlreadyRegisteredUserDTO user = await ur.GetUser(email);
         if(user == null){
             throw new ArgumentException();
         }
         return user;
     }
 
-    public async Task<List<AlreadyRegisteredUserDTO>> DeleteUser(int id){
-        var UserList = await ur.DeleteUser(id);
+    public async Task<List<AlreadyRegisteredUserDTO>> DeleteUser(string email){
+        var UserList = await ur.DeleteUser(email);
         return UserList;
     }
 

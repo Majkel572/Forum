@@ -24,11 +24,15 @@ public class AuthAuthController : ControllerBase
     #region Login
     [AllowAnonymous]
     [HttpPost("login")]
-    public async Task<IActionResult> LoginUser([FromBody]UserLoginDTO userLogin){
+    public async Task<IActionResult> LoginUser([FromBody] UserLoginDTO userLogin)
+    {
         string loggedInToken;
-        try{
+        try
+        {
             loggedInToken = await authAuthService.LoginUser(userLogin);
-        } catch(ArgumentException e){
+        }
+        catch (ArgumentException e)
+        {
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
@@ -37,7 +41,8 @@ public class AuthAuthController : ControllerBase
         return Ok(loggedInToken);
     }
     #endregion
-    private Logs LogCreator(string message){
+    private Logs LogCreator(string message)
+    {
         Logs newLog = new Logs();
         newLog.Log = message;
         return newLog;
