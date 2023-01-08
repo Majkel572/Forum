@@ -18,37 +18,39 @@
 
 <body>
     <!-- Todo: Create main container and columns with form and image -->
-    <main class="row m-auto shadow bg-white px-0">
+    <main class="row flex-row-reverse m-auto shadow bg-white px-0 rounded-3">
       <a href="home.html"><i class="fa-solid fa-xmark"></i></a>
       <div class="col">
         <form
+          id="login"
           action="./welcome.html"
           class="row g-3 needs-validation"
           novalidate
         >
           <h2 class="text-center mb-5">Sign-In</h2>
           <!-- Todo: Create form username and password inputs -->
-          <div class="d-flex p-0">
+          <div id="username" class="d-flex p-0">
             <i class="fa-solid fa-circle-user"></i>
             <input
               type="text"
               class="form-control"
-              placeholder="Username or email"
-              id="validationCustom01"
+              placeholder="Username"
+              id="username"
               required
             />
           </div>
 
-          <div class="d-flex p-0">
+          <div id="password" class="d-flex p-0">
             <i class="fa-solid fa-key"></i>
             <input
               type="password"
               class="form-control"
               placeholder="Password"
-              id="validationCustom02"
+              id="password"
               required
             />
           </div>
+          <div id="alert-container"></div>
 
           <!-- Todo: Create form remember me checkbox and sign-in button -->
 
@@ -92,32 +94,7 @@
     <!--  Bootstrap JS CDN-->
 
     <!-- Todo: Implement Form Validation using Bootstrap  -->
-    <script>
-      // Example starter JavaScript for disabling form submissions if there are invalid fields
-      (function () {
-        "use strict";
-
-        // Fetch all the forms we want to apply custom Bootstrap validation styles to
-        var forms = document.querySelectorAll(".needs-validation");
-
-        // Loop over them and prevent submission
-        Array.prototype.slice.call(forms).forEach(function (form) {
-          form.addEventListener(
-            "submit",
-            function (event) {
-              if (!form.checkValidity()) {
-                event.preventDefault();
-                event.stopPropagation();
-              }
-
-              form.classList.add("was-validated");
-            },
-            false
-          );
-        });
-      })();
-    </script>
-    <script src="../js/validation.js"></script>
+    <script src="../js/loginValid.js"></script>
 </body>
 
 </html>

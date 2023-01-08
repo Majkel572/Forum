@@ -68,7 +68,7 @@ public class RegexChecker{
         bool IsBadString = true;
         if(string.IsNullOrEmpty(s)){
             return IsBadString;
-        } else if (s.Contains("'") || s.Contains(">") || s.Contains("<") || s.Contains("/") || s.Contains("\\")){
+        } else if (s.Contains("'") || s.Contains(">") || s.Contains("<") || s.Contains("/") || s.Contains("\\") || s.Contains("*")){
             return IsBadString;
         }
         IsBadString = false;

@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using ForumWebAPI.Services;
-using ForumWebAPI.RegexCheckers;
 using ForumWebAPI.UserDTOs;
 
 namespace ForumWebAPI.Controllers;

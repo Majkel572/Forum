@@ -25,12 +25,12 @@ public class AuthAuthService
         passwordHasher = new PasswordHasher<User>();
     }
 
-    public AuthAuthService(DataContext dataContext)
-    {
-        this.dataContext = dataContext;
-        ur = new UserRepo(dataContext);
-        passwordHasher = new PasswordHasher<User>();
-    }
+    // public AuthAuthService(DataContext dataContext)
+    // {
+    //     this.dataContext = dataContext;
+    //     ur = new UserRepo(dataContext);
+    //     passwordHasher = new PasswordHasher<User>();
+    // }
     public async Task<string> LoginUser(UserLoginDTO userLogin){
         List<User> UserList = await GetUsersList();
         var user = Authenticate(userLogin, UserList);
@@ -64,7 +64,7 @@ public class AuthAuthService
 
     private AlreadyRegisteredUserDTO Authenticate(UserLoginDTO userLogin, List<User> userList){
         var currentUser = userList.FirstOrDefault(o => o.Username.ToLower() ==
-            userLogin.Username.ToLower() && passwordHasher.VerifyHashedPassword(o, o.HashedPassword, userLogin.Password) != PasswordVerificationResult.Failed);
+            userLogin.Username.ToLower() && passwordHasher.VerifyHashedPassword(o, o.HashedPassword, userLogin.Password) != PasswordVerificationResult.Failed); // na koniec zobacycz czy jak tutaj dodam || to samo z mailem zamiast username to się nie wykrzaczy
         if(currentUser != null){
             var currentUserARUDTO = ur.User_To_AlrRegUsrDTO(currentUser);
             return currentUserARUDTO;

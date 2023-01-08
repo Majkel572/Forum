@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "PD6XhMzlEe++expmRemAy+lnXluRMWOwwfGtvuJwweA=",
+  "Hash": "WOUB0+gsKh72gLUmP0ngbTtBxHuOmsYA2K13flLRl6E=",
   "Source": "ForumWebAPI",
   "BasePath": "_content/ForumWebAPI",
   "Mode": "Default",
@@ -253,6 +253,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\images\\yes.jpg"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\loginValid.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/loginValid.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\loginValid.js"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\validation.js",
