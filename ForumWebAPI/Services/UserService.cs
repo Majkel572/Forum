@@ -1,6 +1,3 @@
-using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Identity;
 using System.ComponentModel;
 using ForumWebAPI.Externals;

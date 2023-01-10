@@ -102,6 +102,7 @@ public class UserRepo : IUserRepo
         user.Country = u.Country;
         user.Username = u.Username;
         user.Role = u.Role;
+        user.Email = u.Email;
         user.BirthDate = u.BirthDate;
         user.validationCode = u.validationCode;
         return user;

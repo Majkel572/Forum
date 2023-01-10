@@ -7,5 +7,7 @@ public class PostDTO
     public string Content { get; set; }
     public string PostOwnerEmail { get; set; }
     public string Topic { get; set; }
-    public IFormFile Image { get; set; }
+    public FormFile Image { get; set; }
+    public bool isDefaultPost { get; set; }
+    public string Section { get; set; }
 }

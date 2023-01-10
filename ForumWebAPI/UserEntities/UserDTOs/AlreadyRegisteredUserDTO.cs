@@ -9,6 +9,7 @@ namespace ForumWebAPI.UserDTOs
         public string Username { get; set; }
         public DateTime BirthDate { get; set; }
         public Roles Role { get; set; }
+        public string Email { get; set; }
         public int validationCode { get; set; }
 
         public AlreadyRegisteredUserDTO() { }

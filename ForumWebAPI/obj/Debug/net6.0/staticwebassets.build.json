@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "nDM6K16J2silKj6jBpxF1vVh2FM0aVE5LMFJUxXAgis=",
+  "Hash": "+XrlwIp8Lo6y7Ka3C+P8Blh3rTIQRkHVNO242Cwkmqk=",
   "Source": "ForumWebAPI",
   "BasePath": "_content/ForumWebAPI",
   "Mode": "Default",
@@ -272,6 +272,23 @@
       "OriginalItemSpec": "wwwroot\\images\\yes.jpg"
     },
     {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\addPost.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/addPost.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\addPost.js"
+    },
+    {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\home.js",
       "SourceId": "ForumWebAPI",
       "SourceType": "Discovered",
@@ -372,6 +389,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\validation.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addPost.html",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "pages/addPost.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pages\\addPost.html"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\confirmRegister.html",

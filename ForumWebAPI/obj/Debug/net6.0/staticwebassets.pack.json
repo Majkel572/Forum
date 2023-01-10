@@ -61,6 +61,10 @@
       "PackagePath": "staticwebassets\\images\\yes.jpg"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\addPost.js",
+      "PackagePath": "staticwebassets\\js\\addPost.js"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\home.js",
       "PackagePath": "staticwebassets\\js\\home.js"
     },
@@ -83,6 +87,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\validation.js",
       "PackagePath": "staticwebassets\\js\\validation.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addPost.html",
+      "PackagePath": "staticwebassets\\pages\\addPost.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\confirmRegister.html",

@@ -20,8 +20,11 @@ public class PostRepo
         }
         Post p = new Post();
         p.Content = post.Content;
-        p.PostOwnerEmail = post.PostOwnerEmail;
+        p.UserEmail = post.PostOwnerEmail;
         p.Topic = post.Topic;
+        p.isDefaultPost = post.isDefaultPost;
+        p.ImageData = imageData;
+        p.Section = post.Section;
         dataContext.Posts.Add(p);
         await dataContext.SaveChangesAsync();
         return true;

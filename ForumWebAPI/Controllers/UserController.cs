@@ -167,6 +167,13 @@ public class UserController : ControllerBase
         var currentUser = GetCurrentUser();
         return "username: " + currentUser.Username + " Role: " + currentUser.RoleReader();
     }
+
+    [HttpPost("signPost")]
+    [Authorize]
+    public async Task<ActionResult<string>> SignPost(){
+        var currentUser = GetCurrentUser();
+        return currentUser.Email + " " + currentUser.RoleReader();
+    }
     #endregion
     #endregion
 
@@ -180,7 +187,8 @@ public class UserController : ControllerBase
                 Name = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Name)?.Value,
                 Surname = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Surname)?.Value,
                 Role = userHelp.RoleWriter(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value),
-                Country = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Country)?.Value
+                Country = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Country)?.Value,
+                Email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
             };
         }
         return null;

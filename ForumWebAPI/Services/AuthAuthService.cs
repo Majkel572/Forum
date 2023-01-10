@@ -12,7 +12,7 @@ using ForumWebAPI.UserDTOs;
 namespace ForumWebAPI.Services;
 
 public class AuthAuthService
-{   
+{
     private readonly DataContext dataContext;
     private UserRepo ur;
     private IConfiguration config;
@@ -31,49 +31,58 @@ public class AuthAuthService
     //     ur = new UserRepo(dataContext);
     //     passwordHasher = new PasswordHasher<User>();
     // }
-    public async Task<string> LoginUser(UserLoginDTO userLogin){
+    public async Task<string> LoginUser(UserLoginDTO userLogin)
+    {
         List<User> UserList = await GetUsersList();
         var user = Authenticate(userLogin, UserList);
 
-        if(user != null){
+        if (user != null)
+        {
             var token = Generate(user);
             return token;
         }
         throw new ArgumentException();
     }
-    private string Generate(AlreadyRegisteredUserDTO user){
+    private string Generate(AlreadyRegisteredUserDTO user)
+    {
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["Jwt:Key"]));
         var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-        
+
         var claims = new[] {
             new Claim(ClaimTypes.NameIdentifier, user.Username),
             new Claim(ClaimTypes.Name, user.Name),
             new Claim(ClaimTypes.Surname, user.Surname),
             new Claim(ClaimTypes.Role, user.RoleReader()),
             new Claim(ClaimTypes.Country, user.Country),
+            new Claim(ClaimTypes.Email, user.Email),
+
         };
 
         var token = new JwtSecurityToken(config["Jwt:Issuer"],
             config["Jwt:Audience"],
             claims,
-            expires: DateTime.Now.AddMinutes(15),
+            expires: DateTime.Now.AddMinutes(60),
             signingCredentials: credentials);
-        
+
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
 
-    private AlreadyRegisteredUserDTO Authenticate(UserLoginDTO userLogin, List<User> userList){
+    private AlreadyRegisteredUserDTO Authenticate(UserLoginDTO userLogin, List<User> userList)
+    {
         var currentUser = userList.FirstOrDefault(o => o.Username.ToLower() ==
             userLogin.Username.ToLower() && passwordHasher.VerifyHashedPassword(o, o.HashedPassword, userLogin.Password) != PasswordVerificationResult.Failed); // na koniec zobacycz czy jak tutaj dodam || to samo z mailem zamiast username to się nie wykrzaczy
-        if(currentUser != null){
+        if (currentUser != null)
+        {
             var currentUserARUDTO = ur.User_To_AlrRegUsrDTO(currentUser);
             return currentUserARUDTO;
         }
         return null;
     }
-    private async Task<List<User>> GetUsersList(){
+    private async Task<List<User>> GetUsersList()
+    {
         var UserList = await ur.GetRawUsers();
-        if(UserList == null || UserList.Count <= 0){
+        if (UserList == null || UserList.Count <= 0)
+        {
             throw new ArgumentException();
         }
         return UserList;
