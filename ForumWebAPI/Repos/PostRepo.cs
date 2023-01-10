@@ -11,10 +11,20 @@ public class PostRepo
         this.dataContext = dataContext;
     }
 
-    public async Task<List<Post>> AddPost(Post p){
+    public async Task<bool> AddPost(PostDTO post){
+        byte[] imageData = null;
+        using (MemoryStream ms = new MemoryStream())
+        {
+            await post.Image.CopyToAsync(ms);
+            imageData = ms.ToArray();
+        }
+        Post p = new Post();
+        p.Content = post.Content;
+        p.PostOwnerEmail = post.PostOwnerEmail;
+        p.Topic = post.Topic;
         dataContext.Posts.Add(p);
         await dataContext.SaveChangesAsync();
-        return await dataContext.Posts.ToListAsync();
+        return true;
     }
 
     public async Task<List<Post>> UpdatePost(){

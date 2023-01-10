@@ -22,7 +22,7 @@ public class PostController : ControllerBase
     #region CRUD
     [HttpPost("newpost")]
     [Authorize(Roles = "default, moderator, administrator")]
-    public async Task<ActionResult<OkObjectResult>> CreatePost([FromBody] Post post){ 
+    public async Task<ActionResult<OkObjectResult>> CreatePost([FromBody] PostDTO post){ 
         try {
             await userService.CreatePost(post);
         } catch(ArgumentException e){ 

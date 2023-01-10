@@ -145,6 +145,28 @@ public class UserController : ControllerBase
         }        
         return Ok(adminList);
     }
+
+    [HttpPost("checkAuth")]
+    [Authorize]
+    public async Task<ActionResult<string>> CheckUserPerm(){
+        var currentUser = GetCurrentUser();
+        if(currentUser.Role.Equals(Roles.ADMINISTRATOR)){
+            return "admin";
+        } else if(currentUser.Role.Equals(Roles.MODERATOR)){
+            return "mod";
+        } else if(currentUser.Role.Equals(Roles.OWNER)){
+            return "owner";
+        } else {
+            return "default";
+        }
+    }
+
+    [HttpPost("whoiam")]
+    [Authorize]
+    public async Task<ActionResult<string>> WhoIAm(){
+        var currentUser = GetCurrentUser();
+        return "username: " + currentUser.Username + " Role: " + currentUser.RoleReader();
+    }
     #endregion
     #endregion
 

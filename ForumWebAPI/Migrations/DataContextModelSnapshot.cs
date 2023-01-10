@@ -34,18 +34,27 @@ namespace ForumWebAPI.Migrations
 
             modelBuilder.Entity("ForumWebAPI.Post", b =>
                 {
-                    b.Property<string>("PostId")
+                    b.Property<int>("PostId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Content")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<byte[]>("ImageData")
+                        .IsRequired()
+                        .HasColumnType("BLOB");
+
+                    b.Property<string>("PostOwnerEmail")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Topic")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("UserEmail")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("content")
-                        .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("postOwnerEmail")
-                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("PostId");

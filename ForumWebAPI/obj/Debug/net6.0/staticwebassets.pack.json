@@ -49,6 +49,10 @@
       "PackagePath": "staticwebassets\\Frontend\\Old\\register\\registerPage.html"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\css\\homepage.css",
+      "PackagePath": "staticwebassets\\css\\homepage.css"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\css\\styles.css",
       "PackagePath": "staticwebassets\\css\\styles.css"
     },
@@ -57,8 +61,24 @@
       "PackagePath": "staticwebassets\\images\\yes.jpg"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\home.js",
+      "PackagePath": "staticwebassets\\js\\home.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\homeLoggedIn.js",
+      "PackagePath": "staticwebassets\\js\\homeLoggedIn.js"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\loginValid.js",
       "PackagePath": "staticwebassets\\js\\loginValid.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\posts.js",
+      "PackagePath": "staticwebassets\\js\\posts.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\registerValid.js",
+      "PackagePath": "staticwebassets\\js\\registerValid.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\validation.js",
@@ -73,8 +93,20 @@
       "PackagePath": "staticwebassets\\pages\\forgotpassword.html"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\genDiscussionPosts.html",
+      "PackagePath": "staticwebassets\\pages\\genDiscussionPosts.html"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\home.html",
       "PackagePath": "staticwebassets\\pages\\home.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\homeLoggedIn.html",
+      "PackagePath": "staticwebassets\\pages\\homeLoggedIn.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\logreg.html",
+      "PackagePath": "staticwebassets\\pages\\logreg.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\registration.html",
@@ -83,6 +115,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\signIn.html",
       "PackagePath": "staticwebassets\\pages\\signIn.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\staffDiscussionPosts.html",
+      "PackagePath": "staticwebassets\\pages\\staffDiscussionPosts.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\welcome.html",

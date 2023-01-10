@@ -40,7 +40,6 @@ loginForm.addEventListener('submit', function (e) {
 
     var username = document.getElementById('username').children['username'].value;
     var password = document.getElementById('password').children['password'].value;
-    console.log(username + " " + password);
 
     if (loginForm.checkValidity()) {
         fetch('https://localhost:7025/api/AuthAuth/login', {
@@ -55,7 +54,7 @@ loginForm.addEventListener('submit', function (e) {
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.replace("https://localhost:7025/pages/welcome.html");
+                    window.location.replace("https://localhost:7025/pages/homeLoggedIn.html");
                     return response.text();
                 }
                 const alert = document.createElement('div');

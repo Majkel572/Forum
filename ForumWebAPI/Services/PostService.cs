@@ -18,10 +18,9 @@ public class PostService
     }
 
     #region CRUD
-    public async Task<Post> CreatePost(Post post){ 
+    public async Task<bool> CreatePost(PostDTO post){ 
         await postRepo.AddPost(post);
-        
-        return(post);
+        return true;
     }
 
     public async Task<List<Post>> DeletePost(Post post){
