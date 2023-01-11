@@ -174,6 +174,13 @@ public class UserController : ControllerBase
         var currentUser = GetCurrentUser();
         return currentUser.Email + " " + currentUser.RoleReader();
     }
+
+    [HttpPost("rolegetter")]
+    [Authorize]
+    public async Task<ActionResult<string>> RoleGettere(){
+        var currentUser = GetCurrentUser();
+        return currentUser.RoleReader();
+    }
     #endregion
     #endregion
 

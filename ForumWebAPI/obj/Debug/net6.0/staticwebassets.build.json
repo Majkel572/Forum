@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "+XrlwIp8Lo6y7Ka3C+P8Blh3rTIQRkHVNO242Cwkmqk=",
+  "Hash": "Nv2e/BkQsNaPs/vj96ro3Bishs/yNMhDQwE8FEwK0JM=",
   "Source": "ForumWebAPI",
   "BasePath": "_content/ForumWebAPI",
   "Mode": "Default",
@@ -355,6 +355,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\posts.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\preventUnauthorized.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/preventUnauthorized.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\preventUnauthorized.js"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\registerValid.js",

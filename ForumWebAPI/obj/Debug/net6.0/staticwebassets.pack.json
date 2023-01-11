@@ -81,6 +81,10 @@
       "PackagePath": "staticwebassets\\js\\posts.js"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\preventUnauthorized.js",
+      "PackagePath": "staticwebassets\\js\\preventUnauthorized.js"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\registerValid.js",
       "PackagePath": "staticwebassets\\js\\registerValid.js"
     },
