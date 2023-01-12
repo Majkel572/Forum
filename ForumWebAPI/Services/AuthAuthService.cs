@@ -8,6 +8,7 @@ using System.ComponentModel;
 using ForumWebAPI.Externals;
 using ForumWebAPI.UserRepos;
 using ForumWebAPI.UserDTOs;
+using ForumWebAPI.RegexCheckers;
 
 namespace ForumWebAPI.Services;
 
@@ -33,6 +34,14 @@ public class AuthAuthService
     // }
     public async Task<string> LoginUser(UserLoginDTO userLogin)
     {
+        RegexChecker regexChecker = new RegexChecker(await ur.GetRawUsers());
+        if(regexChecker is null){
+            regexChecker = new RegexChecker(new List<User>(0));
+        }
+        if(!regexChecker.CheckUserLogin(userLogin)){
+            throw new ArgumentException();
+        }
+
         List<User> UserList = await GetUsersList();
         var user = Authenticate(userLogin, UserList);
 

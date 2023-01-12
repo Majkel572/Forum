@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Nv2e/BkQsNaPs/vj96ro3Bishs/yNMhDQwE8FEwK0JM=",
+  "Hash": "LuUpNZ4xmNvYfw7GY+B00gYIOHmOWmgyhKjgSxuY/ug=",
   "Source": "ForumWebAPI",
   "BasePath": "_content/ForumWebAPI",
   "Mode": "Default",
@@ -340,12 +340,12 @@
       "OriginalItemSpec": "wwwroot\\js\\loginValid.js"
     },
     {
-      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\posts.js",
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\poscik.js",
       "SourceId": "ForumWebAPI",
       "SourceType": "Discovered",
       "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
       "BasePath": "_content/ForumWebAPI",
-      "RelativePath": "js/posts.js",
+      "RelativePath": "js/poscik.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -354,7 +354,24 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\posts.js"
+      "OriginalItemSpec": "wwwroot\\js\\poscik.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\postsDefault.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/postsDefault.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\postsDefault.js"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\preventUnauthorized.js",
@@ -406,6 +423,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\validation.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\wyloguj.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/wyloguj.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\wyloguj.js"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addPost.html",
@@ -525,6 +559,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pages\\logreg.html"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\poscik.html",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "pages/poscik.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pages\\poscik.html"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\registration.html",

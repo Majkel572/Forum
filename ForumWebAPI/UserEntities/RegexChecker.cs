@@ -9,6 +9,9 @@ public class RegexChecker{
     public RegexChecker(List<User> userList){
         this.userList = userList;
     }
+    public RegexChecker(){
+
+    }
     public bool CheckUser(RegisterUserDTO user){
         bool IsValid = true;
         if(user == null){
@@ -25,6 +28,13 @@ public class RegexChecker{
             return IsValid;
         }
         return IsValid;
+    }
+
+    public bool CheckUserLogin(UserLoginDTO user){
+        if(PreventAttack(user.Username) || PreventAttack(user.Password)){
+            return false;
+        }
+        return true;
     }
     
     public bool PreventDoppelganger(RegisterUserDTO user){
@@ -43,6 +53,13 @@ public class RegexChecker{
             }
         }
         return IsValid;
+    }
+
+    public bool CheckPost(PostDTO post){
+        if(PreventAttack(post.Content) || PreventAttack(post.Topic)){
+            return false;
+        }
+        return true;
     }
 
     private bool CheckRegex(string s){

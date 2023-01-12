@@ -172,7 +172,7 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<ActionResult<string>> SignPost(){
         var currentUser = GetCurrentUser();
-        return currentUser.Email + " " + currentUser.RoleReader();
+        return currentUser.Email + " " + currentUser.RoleReader() + " " + currentUser.Username;
     }
 
     [HttpPost("rolegetter")]

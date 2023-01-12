@@ -77,8 +77,12 @@
       "PackagePath": "staticwebassets\\js\\loginValid.js"
     },
     {
-      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\posts.js",
-      "PackagePath": "staticwebassets\\js\\posts.js"
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\poscik.js",
+      "PackagePath": "staticwebassets\\js\\poscik.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\postsDefault.js",
+      "PackagePath": "staticwebassets\\js\\postsDefault.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\preventUnauthorized.js",
@@ -91,6 +95,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\validation.js",
       "PackagePath": "staticwebassets\\js\\validation.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\wyloguj.js",
+      "PackagePath": "staticwebassets\\js\\wyloguj.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addPost.html",
@@ -119,6 +127,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\logreg.html",
       "PackagePath": "staticwebassets\\pages\\logreg.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\poscik.html",
+      "PackagePath": "staticwebassets\\pages\\poscik.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\registration.html",

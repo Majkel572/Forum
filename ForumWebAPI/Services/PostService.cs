@@ -23,9 +23,18 @@ public class PostService
         return newPostList;
     }
 
-    public async Task<List<Post>> GetPosts(){
-        var postList = await postRepo.GetPosts();
+    public async Task<List<Post>> GetDefPosts(){
+        var postList = await postRepo.GetDefPosts();
         return postList;
+    }
+
+    public async Task<List<Post>> GetAdmPosts(){
+        var postList = await postRepo.GetAdmPosts();
+        return postList;
+    }
+    public async Task<Post> GetPostById(int id){
+        var post = await postRepo.GetPostById(id);
+        return post;
     }
     #endregion
 }

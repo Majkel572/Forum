@@ -10,4 +10,5 @@ public class PostDTO
     public FormFile Image { get; set; }
     public bool isDefaultPost { get; set; }
     public string Section { get; set; }
+    public string Username { get; set; }
 }

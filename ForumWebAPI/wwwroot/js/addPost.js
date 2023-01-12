@@ -74,13 +74,12 @@ addPosta.addEventListener('submit', function (e) {
                     var role = data.split(" ")[1];
                     var section = "default";
                     var email = data.split(" ")[0];
+                    var username = data.split(" ")[2];
                     console.log(data.split(" "));
                     formData.append('role', role);
                     formData.append('section', section);
                     formData.append('email', email);
-                    for (var pair of formData.entries()) {
-                        console.log(pair[0] + ', ' + pair[1]);
-                    }
+                    formData.append('username', username);
                     fetch('https://localhost:7025/api/Post/newpost', {
                         method: 'POST',
                         body: formData,
