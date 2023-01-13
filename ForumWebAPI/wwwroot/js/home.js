@@ -8,7 +8,7 @@ function userIsAuthorized() {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${jwt}`
     });
-    fetch('https://localhost:7025/api/User/checkAuth', {
+    fetch('/api/User/checkAuth', {
         method: 'POST',
         headers: headers,
         body: JSON.stringify({ some: 'data' })
@@ -16,11 +16,11 @@ function userIsAuthorized() {
         .then(response => response.text())
         .then(data => {
             if (data === "admin") {
-                window.location.replace("https://localhost:7025/pages/staffDiscussionPosts.html");
+                window.location.href = "/pages/staffDiscussionPosts.html";
             } else if (data === "mod") {
-                window.location.replace("https://localhost:7025/pages/staffDiscussionPosts.html");
+                window.location.href = "/pages/staffDiscussionPosts.html";
             } else if (data === "owner") {
-                window.location.replace("https://localhost:7025/pages/staffDiscussionPosts.html");
+                window.location.href = "/pages/staffDiscussionPosts.html";
             } else {
                 alert("You must be at least moderator to view this content.");
             }

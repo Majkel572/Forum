@@ -95,7 +95,7 @@
     console.log(name + " " + surname + " " + country + " " + birthdate + " " + email + " " + username + " " + password);
   
     if (registerForm.checkValidity()) {
-      fetch('https://localhost:7025/api/User/register', {
+      fetch('/api/User/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -111,7 +111,7 @@
         })
       });
       setTimeout(function() {
-        window.location.replace("https://localhost:7025/pages/confirmRegister.html");
+        window.location.href = "/pages/confirmRegister.html";
       }, 3000);
     }
   });

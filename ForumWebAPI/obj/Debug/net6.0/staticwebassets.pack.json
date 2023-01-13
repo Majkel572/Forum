@@ -61,8 +61,16 @@
       "PackagePath": "staticwebassets\\images\\yes.jpg"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\addAdminPost.js",
+      "PackagePath": "staticwebassets\\js\\addAdminPost.js"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\addPost.js",
       "PackagePath": "staticwebassets\\js\\addPost.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\editposcik.js",
+      "PackagePath": "staticwebassets\\js\\editposcik.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\home.js",
@@ -71,6 +79,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\homeLoggedIn.js",
       "PackagePath": "staticwebassets\\js\\homeLoggedIn.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\homedefer.js",
+      "PackagePath": "staticwebassets\\js\\homedefer.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\loginValid.js",
@@ -83,6 +95,14 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\postsDefault.js",
       "PackagePath": "staticwebassets\\js\\postsDefault.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\postsStaff.js",
+      "PackagePath": "staticwebassets\\js\\postsStaff.js"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\powrot.js",
+      "PackagePath": "staticwebassets\\js\\powrot.js"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\preventUnauthorized.js",
@@ -101,12 +121,24 @@
       "PackagePath": "staticwebassets\\js\\wyloguj.js"
     },
     {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addAdminPost.html",
+      "PackagePath": "staticwebassets\\pages\\addAdminPost.html"
+    },
+    {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addPost.html",
       "PackagePath": "staticwebassets\\pages\\addPost.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\confirmRegister.html",
       "PackagePath": "staticwebassets\\pages\\confirmRegister.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\editposcik.html",
+      "PackagePath": "staticwebassets\\pages\\editposcik.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\editposcikadmin.html",
+      "PackagePath": "staticwebassets\\pages\\editposcikadmin.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\forgotpassword.html",
@@ -131,6 +163,10 @@
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\poscik.html",
       "PackagePath": "staticwebassets\\pages\\poscik.html"
+    },
+    {
+      "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\poscikAdmin.html",
+      "PackagePath": "staticwebassets\\pages\\poscikAdmin.html"
     },
     {
       "Id": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\registration.html",

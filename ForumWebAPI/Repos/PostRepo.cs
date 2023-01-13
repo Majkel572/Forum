@@ -31,6 +31,25 @@ public class PostRepo
         await dataContext.SaveChangesAsync();
         return true;
     }
+    public async Task<bool> UpdatePost(PostDTO post, int id)
+    {
+        byte[] imageData = null;
+        using (MemoryStream ms = new MemoryStream())
+        {
+            await post.Image.CopyToAsync(ms);
+            imageData = ms.ToArray();
+        }
+        var p = dataContext.Posts.FirstOrDefault(x => x.PostId == id);
+        if(p is null){
+            return false;
+        }
+        p.Content = post.Content;
+        p.Topic = post.Topic;
+        p.ImageData = imageData;
+        dataContext.Update(p);
+        await dataContext.SaveChangesAsync();
+        return true;
+    }
 
     public async Task<List<Post>> UpdatePost()
     {
@@ -44,9 +63,13 @@ public class PostRepo
         return Post;
     }
 
-    public async Task<List<Post>> DeletePost(Post u)
+    public async Task<List<Post>> DeletePost(int id)
     {
-        dataContext.Posts.Remove(u);
+        var post = await dataContext.Posts.FindAsync(id);
+        if(post is null){
+            return await dataContext.Posts.ToListAsync();
+        }
+        dataContext.Posts.Remove(post);
         await dataContext.SaveChangesAsync();
         return await dataContext.Posts.ToListAsync();
     }
@@ -54,12 +77,12 @@ public class PostRepo
     public async Task<List<Post>> GetDefPosts()
     {
         var PostList = await dataContext.Posts.ToListAsync();
-        List<PostJS> list = new List<PostJS>();
-        PostJS postek = new PostJS();
+        List<Post> list = new List<Post>();
         foreach (Post p in PostList)
         {
             if (p.Section.Equals("default"))
             {
+                Post postek = new Post();
                 postek.Content = p.Content;
                 postek.Topic = p.Topic;
                 postek.Username = p.Username;
@@ -67,18 +90,18 @@ public class PostRepo
                 list.Add(postek);
             }
         }
-        return PostList;
+        return list;
     }
 
     public async Task<List<Post>> GetAdmPosts()
     {
         var PostList = await dataContext.Posts.ToListAsync();
-        List<PostJS> list = new List<PostJS>();
-        PostJS postek = new PostJS();
+        List<Post> list = new List<Post>();
         foreach (Post p in PostList)
         {
             if (p.Section.Equals("staff"))
             {
+                Post postek = new Post();
                 postek.Content = p.Content;
                 postek.Topic = p.Topic;
                 postek.Username = p.Username;
@@ -86,7 +109,7 @@ public class PostRepo
                 list.Add(postek);
             }
         }
-        return PostList;
+        return list;
     }
 
     public async Task<Post> GetPostById(int id)

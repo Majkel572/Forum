@@ -56,12 +56,51 @@ public class PostController : ControllerBase
         return Ok("Successfully created a new post.");
     }
 
-    [HttpDelete("deleteDefaultpost")]
-    [Authorize(Roles = "moderator, administrator")]
-    public async Task<ActionResult<OkObjectResult>> DeletePost(Post post){ 
+    [HttpPut("editpost")]
+    [Authorize]
+    public async Task<ActionResult<string>> UpdatePost([FromForm] string topic, [FromForm] string content, [FromForm] string role, [FromForm] string section, [FromForm] string email, [FromForm] string username, [FromForm] int postId){
+        var uploadedFile = Request.Form.Files;
+        foreach (var file in uploadedFile)
+        {
+            string Filename = file.FileName;
+        }
+        var image = uploadedFile[0];
+        PostDTO post = new PostDTO();
+        post.Topic = topic;
+        post.Content = content;
+        post.Image = (FormFile)image;
+        post.PostOwnerEmail = email;
+        post.Section = section;
+        post.Username = username;
+        RegexChecker rg = new RegexChecker();
+        rg.CheckPost(post);
+        try {
+            if(role.Equals("default")){
+                post.isDefaultPost = true;
+            } else {
+                post.isDefaultPost = false;
+            }
+            await userService.UpdatePost(post, postId);
+        } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return BadRequest();
+        }
+        return Ok("Successfully created a new post.");
+    }
+
+
+    [HttpDelete("deletepost")]
+    [Authorize(Roles = "default, moderator, administrator, owner")]
+    public async Task<ActionResult<List<Post>>> DeletePost(string id){ 
+        var currentUser = GetCurrentUser(); //autoryzacja
+
+
+        int ide = int.Parse(id);
         var postList = new List<Post>();
         try {
-            postList = await userService.DeletePost(post);
+            postList = await userService.DeletePost(ide);
         } catch(ArgumentException e){ 
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
@@ -87,8 +126,9 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("getstaffposts")]
-    [AllowAnonymous]
+    [Authorize(Roles = "moderator, administrator, owner")]
     public async Task<ActionResult<List<Post>>> GetAdmPosts(){ 
+        var currentUser = GetCurrentUser(); //autoryzacja
         var postList = new List<Post>();
         try {
             postList = await userService.GetAdmPosts();
@@ -102,7 +142,6 @@ public class PostController : ControllerBase
     }
 
     [HttpGet("getpostbyid")]
-    [AllowAnonymous]
     public async Task<ActionResult<Post>> GetPostById([FromQuery] int id){ 
         Post post = new Post();
         try {
@@ -113,7 +152,16 @@ public class PostController : ControllerBase
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest();
         }
-        return Ok(post);
+        PostBase64 pb64 = new PostBase64();
+        pb64.Content = post.Content;
+        pb64.isDefaultPost = post.isDefaultPost;
+        pb64.PostId = post.PostId;
+        pb64.UserEmail = post.UserEmail;
+        pb64.Section = post.Section;
+        pb64.Topic = post.Topic;
+        pb64.Username = post.Username;
+        pb64.ImageData = System.Convert.ToBase64String(post.ImageData);
+        return Ok(pb64);
     }
 
     // [HttpGet("getpostbyid")]

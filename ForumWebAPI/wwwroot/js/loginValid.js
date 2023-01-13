@@ -42,7 +42,7 @@ loginForm.addEventListener('submit', function (e) {
     var password = document.getElementById('password').children['password'].value;
 
     if (loginForm.checkValidity()) {
-        fetch('https://localhost:7025/api/AuthAuth/login', {
+        fetch('/api/AuthAuth/login', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -54,7 +54,7 @@ loginForm.addEventListener('submit', function (e) {
         })
             .then(response => {
                 if (response.ok) {
-                    window.location.replace("https://localhost:7025/pages/homeLoggedIn.html");
+                    window.location.href = "/pages/homeLoggedIn.html";
                     return response.text();
                 }
                 const alert = document.createElement('div');

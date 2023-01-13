@@ -16,6 +16,44 @@
         }, false)
     })
 })();
+var posterekId;
+window.onload = function () {
+    const id = localStorage.getItem('PostId');
+    console.log(id);
+    if (id == null) {
+        alert("Error, please try again.");
+        const jwt = localStorage.getItem('jwt');
+        if (jwt == null) {
+            window.location.href = "/pages/home.html";
+        } else {
+            window.location.href = "/pages/homeLoggedIn.html";
+        }
+    }
+    const url = new URL("https://localhost:7025/api/Post/getpostbyid");
+    url.searchParams.append("id", id);
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+        },
+    }).then(response => response.json())
+        .then(data => {
+            posterekId = data.postId;
+            var base64 = "data:image/jpg;base64," + data.imageData;
+            var byteCharacters = atob(base64.split(',')[1]);
+            var byteNumbers = new Array(byteCharacters.length);
+            for (var i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            var byteArray = new Uint8Array(byteNumbers);
+            var blob = new Blob([byteArray], { type: "image/jpg" });
+            var img = document.createElement("img");
+            img.src = URL.createObjectURL(blob);
+            document.getElementById("image-container").appendChild(img);
+            document.getElementById("topica").value = data.topic;
+            document.getElementById("contica").value = data.content;
+        })
+};
 
 var myVariable = "User!";
 const jwt = localStorage.getItem('jwt');
@@ -43,8 +81,8 @@ addPosta.addEventListener('submit', function (e) {
     document.getElementById("submitterek").disabled = true;
     e.preventDefault();
     if (addPosta.checkValidity()) {
-        var topic = document.getElementById('topic').value;
-        var content = document.getElementById('content').value;
+        var topic = document.getElementById('topica').value;
+        var content = document.getElementById('contica').value;
         var image = document.getElementById('image').files[0];
 
         const formData = new FormData();
@@ -81,8 +119,9 @@ addPosta.addEventListener('submit', function (e) {
                     formData.append('section', section);
                     formData.append('email', email);
                     formData.append('username', username);
-                    fetch('/api/Post/newpost', {
-                        method: 'POST',
+                    formData.append('postId', posterekId);
+                    fetch('/api/Post/editpost', {
+                        method: 'PUT',
                         body: formData,
                         headers: {
                             // 'Content-Type': 'multipart/form-data',

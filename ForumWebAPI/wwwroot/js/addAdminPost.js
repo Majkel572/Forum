@@ -40,8 +40,8 @@ if (jwt === null) {
 const addPosta = document.forms['addPosta'];
 
 addPosta.addEventListener('submit', function (e) {
-    document.getElementById("submitterek").disabled = true;
     e.preventDefault();
+    document.getElementById("submitterek").disabled = true;
     if (addPosta.checkValidity()) {
         var topic = document.getElementById('topic').value;
         var content = document.getElementById('content').value;
@@ -73,7 +73,7 @@ addPosta.addEventListener('submit', function (e) {
                 .then(response => response.text())
                 .then(data => {
                     var role = data.split(" ")[1];
-                    var section = "default";
+                    var section = "staff";
                     var email = data.split(" ")[0];
                     var username = data.split(" ")[2];
                     console.log(data.split(" "));

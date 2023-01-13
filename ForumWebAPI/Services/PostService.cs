@@ -17,9 +17,13 @@ public class PostService
         await postRepo.AddPost(post);
         return true;
     }
+    public async Task<bool> UpdatePost(PostDTO post, int id){ 
+        await postRepo.UpdatePost(post, id);
+        return true;
+    }
 
-    public async Task<List<Post>> DeletePost(Post post){
-        List<ForumWebAPI.Post> newPostList = await postRepo.DeletePost(post);
+    public async Task<List<Post>> DeletePost(int id){
+        List<ForumWebAPI.Post> newPostList = await postRepo.DeletePost(id);
         return newPostList;
     }
 
