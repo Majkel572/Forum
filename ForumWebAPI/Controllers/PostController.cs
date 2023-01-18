@@ -2,7 +2,6 @@ using System.Security.Claims;
 using ForumWebAPI.UserDTOs;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Serilog;
 using ForumWebAPI.RegexCheckers;
 
 namespace ForumWebAPI.Controllers;
@@ -39,8 +38,11 @@ public class PostController : ControllerBase
         post.Section = section;
         post.Username = username;
         RegexChecker rg = new RegexChecker();
-        rg.CheckPost(post);
+
         try {
+            if(rg.CheckPost(post)){
+                return BadRequest();
+            }
             if(role.Equals("default")){
                 post.isDefaultPost = true;
             } else {

@@ -88,7 +88,13 @@ addPosta.addEventListener('submit', function (e) {
                             // 'Content-Type': 'multipart/form-data',
                             'Authorization': `Bearer ${jwt}`
                         }
-                    }).then(response => response.text())
+                    }).then(response => {
+                        if(!response.ok){
+                            alert("Post contains invalid characters.");
+                            throw new Error("Post contains invalid characters.");
+                        }
+                        return response.text();
+                    })
                         .then(data => {
                             if (data == "Successfully created a new post.") {
                                 setTimeout(function () {

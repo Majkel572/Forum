@@ -21,6 +21,7 @@ public class UserService
         this.ur = new UserRepo(dataContext);
         this.config = iconfig;
         this.passwordHasher = new PasswordHasher<User>();
+        this.regexChecker = new RegexChecker();
     }
 
     public UserService(DataContext dataContext)
@@ -31,7 +32,7 @@ public class UserService
     }
     
     #region CRUD
-    public async Task<bool> RegisterUser(RegisterUserDTO user){
+    public async Task<string> RegisterUser(RegisterUserDTO user){
         regexChecker = new RegexChecker(await ur.GetRawUsers());
         if(regexChecker is null){
             regexChecker = new RegexChecker(new List<User>(0));
@@ -42,10 +43,9 @@ public class UserService
         if(!regexChecker.PreventDoppelganger(user)){
             throw new ArgumentException("User already exists.");
         }
-        await ur.AddUser(user);
-        bool userSuccessfullyAdded = true;
+        string secretCode = await ur.AddUser(user);
         EmailSender.SendEmail(user.Email);
-        return userSuccessfullyAdded;
+        return secretCode;
     }
 
     public async Task<bool> ValidateUser(int validationCode, string email){
@@ -64,6 +64,19 @@ public class UserService
         //dodać jeśli nie chce updatować jednego lub wielu z pól żeby przypadkiem nulla nie przypisać
         bool userSuccessfullyUpdated = true;
         return userSuccessfullyUpdated;
+    }
+
+    public async Task<bool> UpdatePassword(AlreadyRegisteredUserDTO currentUser, string oldP, string newP){
+        if(regexChecker.PreventAttack(oldP) || regexChecker.PreventAttack(newP)){
+            throw new ArgumentException();
+        }
+        string fileContent = File.ReadAllText("wwwroot\\lista.txt");
+        if(fileContent.Contains(newP)){
+            throw new ArgumentException();
+        }
+
+        await ur.UpdatePassword(currentUser, oldP, newP);
+        return true;
     }
 
     public async Task<AlreadyRegisteredUserDTO> GetUser(string email){

@@ -26,15 +26,16 @@ public class UserController : ControllerBase
     #region CRUD
     [HttpPost("register")]
     public async Task<ActionResult<List<AlreadyRegisteredUserDTO>>> RegisterUser([FromBody] RegisterUserDTO user){ 
+        string secretCode = "";
         try {
-            await userService.RegisterUser(user);
+            secretCode = await userService.RegisterUser(user);
         } catch(ArgumentException e){ 
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
             return BadRequest("User exists or there was a problem creating one.");
         }
-        return Ok("Account successfuly created, waiting for validation.");
+        return Ok(secretCode);
     }
 
     [HttpPost("validate")]
@@ -56,6 +57,26 @@ public class UserController : ControllerBase
         var currentUser = GetCurrentUser(); //autoryzacja
         try {
             await userService.UpdateUser(user);
+        } catch(ArgumentException e){ 
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return BadRequest();
+        }
+        
+        return Ok("Successfully updated information.");
+    }
+    [HttpPut("chpswd")]
+    [Authorize]
+    public async Task<ActionResult> UpdatePassword([FromBody] string[] pswd){
+        var currentUser = GetCurrentUser(); //autoryzacja
+        if(pswd is null){
+            return BadRequest();
+        }
+        string oldP = pswd[0];
+        string newP = pswd[1];
+        try {
+            await userService.UpdatePassword(currentUser, oldP, newP);
         } catch(ArgumentException e){ 
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();

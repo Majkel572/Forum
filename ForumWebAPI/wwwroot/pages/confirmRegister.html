@@ -20,7 +20,7 @@
       referrerpolicy="no-referrer"
     />
     <link rel="stylesheet" href="../css/styles.css" />
-    <title>Confirm registration</title>
+    <title>WARNING</title>
   </head>
   <body>
     <mai class="row m-auto shadow bg-white px-0">
@@ -28,30 +28,18 @@
       <div class="col">
         <div class="container mt-5 text-center">
           <i class="fa-solid fa-circle-exclamation fa-10x text-warning"></i>
-          <h2 class="my-5">Confirm registration</h2>
+          <h2 class="my-5">WARNING</h2>
           <p>
-            We have send an Email containing your verification <b>code</b> to the
-            provided email address. In order to complete your registration
-            please insert the verifaction code from the email.
+            Take this code and hide it under your pillow because if you forget password this will be your only way to login.
           </p>
         </div>
         <form action="welcome.html">
           <div class="d-flex p-0">
-            <i class="fa-solid fa-code"></i>
-            <input
-              type="number"
-              class="form-control text-center"
-              placeholder="Validation code"
-              required
-            />
-            <button class="btn btn-success ms-2" type="submit" disabled>
-              Verify
-            </button>
+            <h2 class="col text-center">Your code:</h2>
+            <h2 id="codeID" class="col text-center"></h2>
           </div>
           <div class="container mt-5 text-center">
-            <p>
-              Or You can do it later and now proceed to Sign-In to be able to use forum to a full user extent.
-            </p>
+            
           </div>
           <div class="d-flex p-0">
             <div class="col text-center">
@@ -84,5 +72,6 @@
         };
       })();
     </script>
+    <script src="../js/confirmRegister.js" defer></script>
   </body>
 </html>

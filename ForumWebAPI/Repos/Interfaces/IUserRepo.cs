@@ -3,7 +3,7 @@ using ForumWebAPI.UserDTOs;
 namespace ForumWebAPI.UserRepos;
 
 public interface IUserRepo{   
-    public Task<bool> AddUser(RegisterUserDTO p);
+    public Task<string> AddUser(RegisterUserDTO p);
 
     public Task<bool> UpdateUser(RegisterUserDTO u);
 

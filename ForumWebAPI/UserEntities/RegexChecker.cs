@@ -17,7 +17,7 @@ public class RegexChecker{
         if(user == null){
             IsValid = false;
             return IsValid;
-        } else if(!user.Email.Contains("@") || !user.Email.Contains(".") || PreventAttack(user.Email)){
+        } else if(!user.Email.Contains("@") || !user.Email.Contains(".") || PreventAttackEmail(user.Email)){
             IsValid = false;
             return IsValid;
         } else if (CheckRegex(user.Name) || CheckRegex(user.Surname) || CheckRegex(user.Country)){
@@ -56,17 +56,17 @@ public class RegexChecker{
     }
 
     public bool CheckPost(PostDTO post){
-        if(PreventAttack(post.Content) || PreventAttack(post.Topic)){
-            return false;
+        if(PreventAttack(post.Content) || PreventAttack(post.Topic) || post.Topic.Length >= 20 || post.Content.Length >= 4000){
+            return true;
         }
-        return true;
+        return false;
     }
 
     private bool CheckRegex(string s){
         bool IsBadString = true;
         if(string.IsNullOrEmpty(s)){
             return IsBadString;
-        } else if (!Regex.IsMatch(s, @"(^[a-zA-Z]+$)|(^[a-zA-Z]-[a-zA-Z]$)")){
+        } else if (!(Regex.IsMatch(s, @"(^[a-zA-Z]+$)|(^[a-zA-Z]-[a-zA-Z]$)"))){
             return IsBadString;
         }
         foreach (char c in s){
@@ -81,11 +81,22 @@ public class RegexChecker{
         return IsBadString;
     }
 
-    private bool PreventAttack(string s){
+    public bool PreventAttack(string s){
+        bool IsBadString = true;
+        if(string.IsNullOrEmpty(s)){
+            throw new ArgumentException();
+        } else if (!Regex.IsMatch(s, @"^[a-zA-Z0-9?.,:;()@ ]+$")){
+            throw new ArgumentException();
+        }
+        IsBadString = false;
+
+        return IsBadString;
+    }
+    private bool PreventAttackEmail(string s){
         bool IsBadString = true;
         if(string.IsNullOrEmpty(s)){
             return IsBadString;
-        } else if (s.Contains("'") || s.Contains(">") || s.Contains("<") || s.Contains("/") || s.Contains("\\") || s.Contains("*")){
+        } else if (!Regex.IsMatch(s, @"^[a-zA-Z0-9-.@]+$")){
             return IsBadString;
         }
         IsBadString = false;

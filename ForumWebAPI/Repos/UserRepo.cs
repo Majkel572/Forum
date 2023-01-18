@@ -14,12 +14,12 @@ public class UserRepo : IUserRepo
         passwordHasher = new PasswordHasher<User>();
     }
 
-    public async Task<bool> AddUser(RegisterUserDTO p){
+    public async Task<string> AddUser(RegisterUserDTO p){
         User dbUser = RegUsrDTO_To_User(p);
         dataContext.Users.Add(dbUser);
         await dataContext.SaveChangesAsync();
-        bool added = true;
-        return added;
+        string secretCode = dbUser.validationCode.ToString();
+        return secretCode;
     }
 
     public async Task<bool> UpdateUser(RegisterUserDTO u){
@@ -37,7 +37,19 @@ public class UserRepo : IUserRepo
         bool updated = true;
         return updated;
     }
-
+    public async Task<bool> UpdatePassword(AlreadyRegisteredUserDTO currentUser, string oldP, string newP){
+        var dbUser = await dataContext.Users.FindAsync(currentUser.Email);
+        if(dbUser == null){
+            throw new ArgumentException();
+        }
+        if(passwordHasher.VerifyHashedPassword(dbUser, dbUser.HashedPassword, oldP) == PasswordVerificationResult.Success){
+            dbUser.HashedPassword = passwordHasher.HashPassword(dbUser, newP);
+            dataContext.Users.Update(dbUser);
+            await dataContext.SaveChangesAsync();
+            return true;
+        }
+        throw new ArgumentException();
+    }
     public async Task<AlreadyRegisteredUserDTO> GetUser(string email){
         var user = await dataContext.Users.FindAsync(email);
         if(user == null){

@@ -35,10 +35,12 @@ public class AuthAuthService
     public async Task<string> LoginUser(UserLoginDTO userLogin)
     {
         RegexChecker regexChecker = new RegexChecker(await ur.GetRawUsers());
-        if(regexChecker is null){
+        if (regexChecker is null)
+        {
             regexChecker = new RegexChecker(new List<User>(0));
         }
-        if(!regexChecker.CheckUserLogin(userLogin)){
+        if (!regexChecker.CheckUserLogin(userLogin))
+        {
             throw new ArgumentException();
         }
 
@@ -52,6 +54,33 @@ public class AuthAuthService
         }
         throw new ArgumentException();
     }
+
+    public async Task<string> ForgottenUser(UserLoginDTO userLogin)
+    {
+        RegexChecker regexChecker = new RegexChecker(await ur.GetRawUsers());
+
+        if (regexChecker is null)
+        {
+            regexChecker = new RegexChecker(new List<User>(0));
+        }
+
+        if (!regexChecker.CheckUserLogin(userLogin))
+        {
+            throw new ArgumentException();
+        }
+
+
+        List<User> UserList = await GetUsersList();
+        var user = AuthenticateForgotten(userLogin, UserList);
+
+        if (user != null)
+        {
+            var token = Generate(user);
+            return token;
+        }
+        throw new ArgumentException();
+    }
+
     private string Generate(AlreadyRegisteredUserDTO user)
     {
         var securityKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(config["Jwt:Key"]));
@@ -87,6 +116,19 @@ public class AuthAuthService
         }
         return null;
     }
+
+    private AlreadyRegisteredUserDTO AuthenticateForgotten(UserLoginDTO userLogin, List<User> userList){
+        var currentUser = userList.FirstOrDefault(o => o.Email ==
+            userLogin.Username && o.validationCode.ToString() == userLogin.Password);
+        if (currentUser != null)
+        {
+            var currentUserARUDTO = ur.User_To_AlrRegUsrDTO(currentUser);
+            return currentUserARUDTO;
+        }
+        return null;
+    }
+
+
     private async Task<List<User>> GetUsersList()
     {
         var UserList = await ur.GetRawUsers();

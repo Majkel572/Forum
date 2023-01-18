@@ -40,6 +40,25 @@ public class AuthAuthController : ControllerBase
         }
         return Ok(loggedInToken);
     }
+
+    [AllowAnonymous]
+    [HttpPost("forgot")]
+    public async Task<IActionResult> ForgottenUser([FromBody] UserLoginDTO userLogin)
+    {
+        string loggedInToken;
+        try
+        {
+            loggedInToken = await authAuthService.ForgottenUser(userLogin);
+        }
+        catch (ArgumentException e)
+        {
+            dataContext.Logs.Add(LogCreator(e.ToString()));
+            await dataContext.SaveChangesAsync();
+            logger.LogError(new ArgumentException(), "Errored error");
+            return NotFound("User not found");
+        }
+        return Ok(loggedInToken);
+    }
     #endregion
     private Logs LogCreator(string message)
     {

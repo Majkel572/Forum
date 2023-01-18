@@ -14,22 +14,27 @@ public class PostRepo
     public async Task<bool> AddPost(PostDTO post)
     {
         byte[] imageData = null;
+        Console.WriteLine(post.Image);
         using (MemoryStream ms = new MemoryStream())
         {
             await post.Image.CopyToAsync(ms);
             imageData = ms.ToArray();
         }
-        Post p = new Post();
-        p.Content = post.Content;
-        p.UserEmail = post.PostOwnerEmail;
-        p.Topic = post.Topic;
-        p.isDefaultPost = post.isDefaultPost;
-        p.ImageData = imageData;
-        p.Section = post.Section;
-        p.Username = post.Username;
-        dataContext.Posts.Add(p);
-        await dataContext.SaveChangesAsync();
-        return true;
+        byte[] jpegSig = new byte[] { 0xff, 0xd8, 0xff };
+        if (imageData[0] == jpegSig[0] && imageData[1] == jpegSig[1] && imageData[2] == jpegSig[2]){
+            Post p = new Post();
+            p.Content = post.Content;
+            p.UserEmail = post.PostOwnerEmail;
+            p.Topic = post.Topic;
+            p.isDefaultPost = post.isDefaultPost;
+            p.ImageData = imageData;
+            p.Section = post.Section;
+            p.Username = post.Username;
+            dataContext.Posts.Add(p);
+            await dataContext.SaveChangesAsync();
+            return true;
+        }
+        throw new ArgumentException("Bad image");
     }
     public async Task<bool> UpdatePost(PostDTO post, int id)
     {

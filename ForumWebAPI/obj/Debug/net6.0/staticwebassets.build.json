@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "R6dduYFpOOFkPjyxfG0mGQabgRBUq1xOk+VeoIbzz7I=",
+  "Hash": "I/yPk7PebNGjkD8llVdjS+M2qHHJtCo5Wydu5sKY78A=",
   "Source": "ForumWebAPI",
   "BasePath": "_content/ForumWebAPI",
   "Mode": "Default",
@@ -306,6 +306,40 @@
       "OriginalItemSpec": "wwwroot\\js\\addPost.js"
     },
     {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\changePassword.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/changePassword.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\changePassword.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\confirmRegister.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/confirmRegister.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\confirmRegister.js"
+    },
+    {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\editposcik.js",
       "SourceId": "ForumWebAPI",
       "SourceType": "Discovered",
@@ -321,6 +355,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\editposcik.js"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\forgotpassword.js",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "js/forgotpassword.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\forgotpassword.js"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\js\\home.js",
@@ -527,6 +578,23 @@
       "OriginalItemSpec": "wwwroot\\js\\wyloguj.js"
     },
     {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\lista.txt",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "lista.txt",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\lista.txt"
+    },
+    {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\addAdminPost.html",
       "SourceId": "ForumWebAPI",
       "SourceType": "Discovered",
@@ -559,6 +627,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\pages\\addPost.html"
+    },
+    {
+      "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\changePassword.html",
+      "SourceId": "ForumWebAPI",
+      "SourceType": "Discovered",
+      "ContentRoot": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\",
+      "BasePath": "_content/ForumWebAPI",
+      "RelativePath": "pages/changePassword.html",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\pages\\changePassword.html"
     },
     {
       "Identity": "C:\\Users\\mikul\\Desktop\\PAMiW\\Forum\\ForumWebAPI\\wwwroot\\pages\\confirmRegister.html",
