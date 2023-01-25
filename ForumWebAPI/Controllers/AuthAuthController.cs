@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -36,7 +35,7 @@ public class AuthAuthController : ControllerBase
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
             logger.LogError(new ArgumentException(), "Errored error");
-            return NotFound("User not found");
+            return NotFound(e.Message);
         }
         return Ok(loggedInToken);
     }
@@ -54,7 +53,7 @@ public class AuthAuthController : ControllerBase
         {
             dataContext.Logs.Add(LogCreator(e.ToString()));
             await dataContext.SaveChangesAsync();
-            logger.LogError(new ArgumentException(), "Errored error");
+            logger.LogError(new ArgumentException(), e.Message);
             return NotFound("User not found");
         }
         return Ok(loggedInToken);

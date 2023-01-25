@@ -186,7 +186,7 @@ public class UserController : ControllerBase
     [Authorize]
     public async Task<ActionResult<string>> WhoIAm(){
         var currentUser = GetCurrentUser();
-        return "username: " + currentUser.Username + " Role: " + currentUser.RoleReader();
+        return "username: " + currentUser.Username + " Role: " + currentUser.RoleReader() + " Last login: " + currentUser.lastLogin;
     }
 
     [HttpPost("signPost")]
@@ -217,6 +217,7 @@ public class UserController : ControllerBase
                 Role = userHelp.RoleWriter(userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Role)?.Value),
                 Country = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Country)?.Value,
                 Email = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.Email)?.Value,
+                lastLogin = userClaims.FirstOrDefault(o => o.Type == ClaimTypes.DateOfBirth)?.Value
             };
         }
         return null;

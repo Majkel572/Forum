@@ -8,17 +8,24 @@ public class UserRepo : IUserRepo
 {   
     private readonly DataContext dataContext;
     private readonly IPasswordHasher<User> passwordHasher;
+    private static UserRepo instance = null;
+    public static UserRepo Instance {
+        get{
+            return instance;
+        }
+    } 
     public UserRepo(DataContext dataContext)
     {
+        instance = this;
         this.dataContext = dataContext;
         passwordHasher = new PasswordHasher<User>();
     }
 
     public async Task<string> AddUser(RegisterUserDTO p){
-        User dbUser = RegUsrDTO_To_User(p);
+        string secretCode = Guid.NewGuid().ToString();
+        User dbUser = RegUsrDTO_To_User(p, secretCode);
         dataContext.Users.Add(dbUser);
         await dataContext.SaveChangesAsync();
-        string secretCode = dbUser.validationCode.ToString();
         return secretCode;
     }
 
@@ -88,21 +95,40 @@ public class UserRepo : IUserRepo
         return UserList;
     }
 
+    public async Task<bool> UpdateCounter(string username){
+        var userList = await GetRawUsers();
+        var dbUser = userList.FirstOrDefault(o => o.Username.ToLower() == username.ToLower());
+        if(dbUser is null){
+            throw new Exception();
+        }
+        dbUser.loginCounter++;
+        dataContext.Users.Update(dbUser);
+        await dataContext.SaveChangesAsync();
+        return true;
+    }
+
+    public async Task<bool> UpdateDateTimeLastLogin(User user){
+        dataContext.Users.Update(user);
+        await dataContext.SaveChangesAsync();
+        return true;
+    }
+
     #region swappers
-    private User RegUsrDTO_To_User(RegisterUserDTO registerUserDTO){
+    private User RegUsrDTO_To_User(RegisterUserDTO registerUserDTO, string secretCode){
         User u = new User();
         // u.Id = registerUserDTO.Id;
+        CustomPasswordHasher cph = new CustomPasswordHasher();
         u.Name = registerUserDTO.Name;
         u.Surname = registerUserDTO.Surname;
         u.Country = registerUserDTO.Country;
         u.BirthDate = registerUserDTO.BirthDate;
         u.Email = registerUserDTO.Email;
         u.Username = registerUserDTO.Username;
-        u.HashedPassword = passwordHasher.HashPassword(u, registerUserDTO.Password);//EncodePassword(registerUserDTO.Password);
+        u.HashedPassword = /*cph.HashPassword(registerUserDTO.Password);//passwordHasher.HashPassword(u, registerUserDTO.Password);*/PasswordEncodere.PasswordEncoder.EncodePassword(registerUserDTO.Password);
         u.Role = Roles.DEFAULT;
         u.isValidated = false;
-        var rnd = new Random();
-        u.validationCode = rnd.Next(0, 100000);
+        u.validationCode = PasswordEncodere.PasswordEncoder.EncodePassword(secretCode);
+        u.lastLogin = DateTime.Now.ToString();
         return u;
     }
 
@@ -117,6 +143,8 @@ public class UserRepo : IUserRepo
         user.Email = u.Email;
         user.BirthDate = u.BirthDate;
         user.validationCode = u.validationCode;
+        user.lastLogin = u.lastLogin;
+        user.loginCounter = u.loginCounter;
         return user;
     }
 

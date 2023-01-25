@@ -14,7 +14,8 @@ window.onload = function () {
         })
             .then(response => response.text())
             .then(data => {
-                document.getElementById("usernameDisplay").innerHTML = data.split(" ")[0] + " " + data.split(" ")[1] + "<br>" + data.split(" ")[2] + " " + data.split(" ")[3];
+                console.log(data.split(" "));
+                document.getElementById("usernameDisplay").innerHTML = data.split(" ")[0] + " " + data.split(" ")[1] + "<br>" + data.split(" ")[2] + " " + data.split(" ")[3] + "<br>" + data.split(" ")[4] + " " + data.split(" ")[5] + " " + data.split(" ")[6] + " " + data.split(" ")[7];
             })
     }
 };

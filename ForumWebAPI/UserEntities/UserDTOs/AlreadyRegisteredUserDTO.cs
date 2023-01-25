@@ -10,7 +10,9 @@ namespace ForumWebAPI.UserDTOs
         public DateTime BirthDate { get; set; }
         public Roles Role { get; set; }
         public string Email { get; set; }
-        public int validationCode { get; set; }
+        public string validationCode { get; set; }
+        public string lastLogin { get; set; }
+        public int loginCounter { get; set; }
 
         public AlreadyRegisteredUserDTO() { }
 

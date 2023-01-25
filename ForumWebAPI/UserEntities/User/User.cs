@@ -1,4 +1,3 @@
-using SQLite;
 
 namespace ForumWebAPI;
 
@@ -14,5 +13,8 @@ public class User
     public Roles Role { get; set; }
     public List<Post> UserPosts { get; set; }
     public bool isValidated { get; set; }
-    public int validationCode { get; set; }
+    public string validationCode { get; set; }
+    public string lastLogin { get; set; }
+    public int loginCounter { get; set; }
+
 }

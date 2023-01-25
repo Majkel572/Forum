@@ -3,14 +3,12 @@ using Microsoft.AspNetCore.Identity;
 
 public class CustomPasswordHasher
 {
+    private const string pepper = "pizzapepperoni";
     public string HashPassword(string password)
     {
         // Generate a new salt
         byte[] salt;
         new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-        // Create the pepper
-        var pepper = "pizzapepperoni";
 
         // Combine the password, salt, and pepper
         var saltedPepperedPassword = password + Convert.ToBase64String(salt) + pepper;
@@ -28,7 +26,6 @@ public class CustomPasswordHasher
     {
         // Extract the salt and pepper from the hashed password
         var salt = Convert.FromBase64String(hashedPassword.Substring(0, 22));
-        var pepper = "my pepper";
 
         // Combine the provided password, salt, and pepper
         var saltedPepperedProvidedPassword = providedPassword + Convert.ToBase64String(salt) + pepper;

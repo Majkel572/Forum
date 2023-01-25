@@ -34,11 +34,7 @@ public class AuthAuthService
     // }
     public async Task<string> LoginUser(UserLoginDTO userLogin)
     {
-        RegexChecker regexChecker = new RegexChecker(await ur.GetRawUsers());
-        if (regexChecker is null)
-        {
-            regexChecker = new RegexChecker(new List<User>(0));
-        }
+        RegexChecker regexChecker = new RegexChecker();
         if (!regexChecker.CheckUserLogin(userLogin))
         {
             throw new ArgumentException();
@@ -57,19 +53,13 @@ public class AuthAuthService
 
     public async Task<string> ForgottenUser(UserLoginDTO userLogin)
     {
-        RegexChecker regexChecker = new RegexChecker(await ur.GetRawUsers());
+        RegexChecker regexChecker = new RegexChecker();
+        // if (!regexChecker.CheckUserLogin(userLogin))
+        // {
+        //     // throw new ArgumentException();
+        // }
 
-        if (regexChecker is null)
-        {
-            regexChecker = new RegexChecker(new List<User>(0));
-        }
-
-        if (!regexChecker.CheckUserLogin(userLogin))
-        {
-            throw new ArgumentException();
-        }
-
-
+        Console.WriteLine("DUPA");
         List<User> UserList = await GetUsersList();
         var user = AuthenticateForgotten(userLogin, UserList);
 
@@ -93,7 +83,7 @@ public class AuthAuthService
             new Claim(ClaimTypes.Role, user.RoleReader()),
             new Claim(ClaimTypes.Country, user.Country),
             new Claim(ClaimTypes.Email, user.Email),
-
+            new Claim(ClaimTypes.DateOfBirth, user.lastLogin)
         };
 
         var token = new JwtSecurityToken(config["Jwt:Issuer"],
@@ -107,19 +97,33 @@ public class AuthAuthService
 
     private AlreadyRegisteredUserDTO Authenticate(UserLoginDTO userLogin, List<User> userList)
     {
+        CustomPasswordHasher cph = new CustomPasswordHasher();
         var currentUser = userList.FirstOrDefault(o => o.Username.ToLower() ==
-            userLogin.Username.ToLower() && passwordHasher.VerifyHashedPassword(o, o.HashedPassword, userLogin.Password) != PasswordVerificationResult.Failed); // na koniec zobacycz czy jak tutaj dodam || to samo z mailem zamiast username to się nie wykrzaczy
+            userLogin.Username.ToLower() && PasswordEncodere.PasswordEncoder.IsMatchPassword(userLogin.Password, o.HashedPassword) != PasswordVerificationResult.Failed); // na koniec zobacycz czy jak tutaj dodam || to samo z mailem zamiast username to się nie wykrzaczy
         if (currentUser != null)
         {
+            if (currentUser.loginCounter >= 10)
+            {
+                throw new Exception("User account blocked.");
+            }
+            UserRepo ur = UserRepo.Instance;
+            currentUser.lastLogin = DateTime.Now.ToString();
             var currentUserARUDTO = ur.User_To_AlrRegUsrDTO(currentUser);
+            ur.UpdateDateTimeLastLogin(currentUser);
             return currentUserARUDTO;
         }
-        return null;
+        else
+        {
+            UserRepo ur = UserRepo.Instance;
+            ur.UpdateCounter(userLogin.Username);
+            return null;
+        }
     }
 
-    private AlreadyRegisteredUserDTO AuthenticateForgotten(UserLoginDTO userLogin, List<User> userList){
+    private AlreadyRegisteredUserDTO AuthenticateForgotten(UserLoginDTO userLogin, List<User> userList)
+    {
         var currentUser = userList.FirstOrDefault(o => o.Email ==
-            userLogin.Username && o.validationCode.ToString() == userLogin.Password);
+            userLogin.Username && PasswordEncodere.PasswordEncoder.IsMatchPassword(userLogin.Password, o.validationCode) != PasswordVerificationResult.Failed);
         if (currentUser != null)
         {
             var currentUserARUDTO = ur.User_To_AlrRegUsrDTO(currentUser);

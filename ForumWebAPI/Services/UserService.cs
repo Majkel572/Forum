@@ -50,7 +50,7 @@ public class UserService
 
     public async Task<bool> ValidateUser(int validationCode, string email){
         AlreadyRegisteredUserDTO user = await ur.GetUser(email);
-        if(user.validationCode == validationCode){
+        if(user.validationCode.Equals(validationCode)){
             return true;
         }
         return false;
